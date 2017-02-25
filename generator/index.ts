@@ -1,5 +1,5 @@
 /*
-    By Adrian Salamon (soon tm)
+    By Adrian Salamon
 */
 
 import { ideology, ideologyWithProbabilities } from './interfaces'
