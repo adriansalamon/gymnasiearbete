@@ -32,6 +32,6 @@ const ideologyProbabilities: Array<ideologyWithProbabilities> = assignProbabilit
 
 const result = createAllBallots(ideologies, ideologyProbabilities, numberOfBallots)
 
-// fs.writeFile('test.json', JSON.stringify(result));
+fs.writeFile('out.json', JSON.stringify(result));
 
 console.log(`Finished. Took ${(Date.now() - start)/1000} s`)
