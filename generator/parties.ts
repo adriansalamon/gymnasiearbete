@@ -37,7 +37,7 @@ export function createParties(numberOfParties: number, ideologies: Array<ideolog
 
 
 // Assigns the probability of the voters within an ideology
-export function assignProbabilityToIdeology(ideologies: Array<ideology>, parties: Array<party>): Array<test> {
+export function assignProbabilityToIdeology(ideologies: Array<ideology>, parties: Array<party>): Array<ideologyWithProbabilities> {
     let result: Array<ideologyWithProbabilities> = []
 
     // Loops through each ideology
