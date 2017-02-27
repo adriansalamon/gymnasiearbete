@@ -1,13 +1,13 @@
-import {ideology, ideologyWithProbabilities, ideologyWithParties, party} from './interfaces'
+import {Ideology, IdeologyWithProbabilities, IdeologyWithParties, Party} from './interfaces'
 
 // Creates the parties and assigns them an ideology based on their relative sizes.
-export function createParties(numberOfParties: number, ideologies: Array<ideology>): Array<party> {
+export function createParties(numberOfParties: number, ideologies: Array<Ideology>): Array<Party> {
 
-    const tempIdeologies: Array<ideologyWithParties> = ideologies.map((ideology) => {
+    const tempIdeologies: Array<IdeologyWithParties> = ideologies.map((ideology) => {
         return Object.assign({}, ideology, { numberOfParties: 0 })
     })
 
-    let parties: Array<party> = []
+    let parties: Array<Party> = []
     const initialNumberOfParties = numberOfParties
 
     // Loops while not every party has an ideology
@@ -21,7 +21,7 @@ export function createParties(numberOfParties: number, ideologies: Array<ideolog
                 //Gets the number of parties that should belong to an ideology
                 const size = Math.round(initialNumberOfParties * ideology.size)
                 // An ideology needs to have at least one party
-                if ((size == 0 ? 1 : size) > ideology.numberOfParties) {
+                if ((size === 0 ? 1 : size) > ideology.numberOfParties) {
                     ideology.numberOfParties++
                     numberOfParties--
                     // Pushes thae new party to the array
@@ -37,15 +37,15 @@ export function createParties(numberOfParties: number, ideologies: Array<ideolog
 
 
 // Assigns the probability of the voters within an ideology
-export function assignProbabilityToIdeology(ideologies: Array<ideology>, parties: Array<party>): Array<ideologyWithProbabilities> {
-    let result: Array<ideologyWithProbabilities> = []
+export function assignProbabilityToIdeology(ideologies: Array<Ideology>, parties: Array<Party>): Array<IdeologyWithProbabilities> {
+    let result: Array<IdeologyWithProbabilities> = []
 
     // Loops through each ideology
     for (var ideologyIndex = 0; ideologyIndex < ideologies.length; ideologyIndex++) {
         let ideology = ideologies[ideologyIndex]
         // Maps parties and sets the size according to ideology
         const withProbabilities = parties.map(party => {
-            if (party.ideology == ideologyIndex) {
+            if (party.ideology === ideologyIndex) {
                 // Increases probability of voting for party aligned with ideology
                 return party.size * 8 * (ideology.ideologyPower**2)
             } else {
@@ -68,7 +68,7 @@ export function assignProbabilityToIdeology(ideologies: Array<ideology>, parties
 
 
 // Assigns relative sizes to all parties based on their ideologies
-function assignPartySizes(parties: Array<party>, ideologies: Array<ideologyWithParties>): Array<party> {
+function assignPartySizes(parties: Array<Party>, ideologies: Array<IdeologyWithParties>): Array<Party> {
     // Loops through all ideologies
     for (var ideologyIndex = 0; ideologyIndex < ideologies.length; ideologyIndex++) {
         const ideology = ideologies[ideologyIndex]
@@ -77,7 +77,7 @@ function assignPartySizes(parties: Array<party>, ideologies: Array<ideologyWithP
         
         // Maps over parties and changes the size if the party ideology matches that of the state of the loop
         parties = parties.map((party) => {
-            if (party.ideology == ideologyIndex) {
+            if (party.ideology === ideologyIndex) {
                 // Shifts the size from the array
                 const size = ideologySizeList.shift() * ideology.size
                 // Creates a new object and returns it to the array
@@ -121,7 +121,7 @@ function calculateDistribution (parties: number, k:number): Array<number> {
 
 // Finds x values recursively and returns the result
 function calculateXValues(parties: number, k: number, stepSize: number, x: number, result: Array<number>):Array<number> {
-    if (parties == 0) {
+    if (parties === 0) {
         // Returns result at the end of recursion
         return result
     } else {

@@ -339,3 +339,4 @@ typings/
 # OWN EXCLUDE
 
 *.js
+out.json

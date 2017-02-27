@@ -1,23 +1,23 @@
     
-export interface ideology {
+export interface Ideology {
     size: number,
     partyPower: number,
     ideologyPower: number
 }
 
-export interface ideologyWithParties {
+export interface IdeologyWithParties {
     size: number,
     partyPower: number,
     ideologyPower: number,
     numberOfParties: number
 }
 
-export interface ideologyWithProbabilities {
+export interface IdeologyWithProbabilities {
     probabilities: Array<number>,
     parties: Array<number>
 }
 
-export interface party {
+export interface Party {
     ideology: number,
     size: number | undefined
 }
