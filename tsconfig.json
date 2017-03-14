@@ -3,6 +3,10 @@
         "target": "es6",
         "module": "commonjs",
         "sourceMap": false,
-        "strictNullChecks": true
+        "strictNullChecks": true,
+        "lib": [
+            "es2016",
+            "dom"
+        ]
     }
 }
