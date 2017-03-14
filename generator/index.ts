@@ -9,8 +9,8 @@ const fs = require('fs')
 
 const start = Date.now()
 
-const numberOfParties: number = 12
-const numberOfBallots: number = 1000000
+const numberOfParties: number = 8
+const numberOfBallots: number = 100
 
 const ideologies: Array<ideology> = [{
     size: 0.2,
