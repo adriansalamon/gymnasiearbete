@@ -1,4 +1,4 @@
-import { ideology, ideologyWithProbabilities } from './interfaces';
+import { Ideology, IdeologyWithProbabilities } from './interfaces'
 
 
 // Generates the ballots, essentially the output of the program
@@ -39,7 +39,7 @@ export function generateBallots(numberOfBallots: number, prob: Array<number>, pa
     return ballots
 }
 
-export function createAllBallots(ideologies: Array<ideology>, ideologyProbabilities: Array<ideologyWithProbabilities>, ballots: number): Array<Array<number>> {
+export function createAllBallots(ideologies: Array<Ideology>, ideologyProbabilities: Array<IdeologyWithProbabilities>, ballots: number): Array<Array<number>> {
     let result: Array<Array<number>> = []
 
     for (var i = 0; i < ideologies.length; i++) {
