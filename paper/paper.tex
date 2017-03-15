@@ -1,0 +1,169 @@
+\input{config.tex}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+\usepackage{pseudocode}
+
+\addbibresource{sample.bib}
+
+
+\begin{document}
+
+\begin{titlepage}
+	\centering
+	\vspace{2cm}
+	{\Huge Analysis of voting systems: What should I call it? \par}
+	\vspace{0.6cm}
+	{\LARGE Adrian Salamon\par}
+
+	\vspace{0.6cm}
+ 	{\Large Kungsholmens gymnasium\par}
+	\vspace{0.4cm}
+	{\large Senior thesis\par}
+	\vspace{0.6cm}
+	\includegraphics[width=0.3\textwidth]{kg}\par\vspace{1cm}
+	\vspace{4cm}
+	\vfill
+	Supervised by: \par
+	Maja Kankaanranta
+
+	\vfill
+
+% Bottom of the page
+	{\large \today\par}
+\end{titlepage}
+
+\pagebreak
+
+\begin{abstract}
+The abstract text goes here.
+\end{abstract}
+
+\pagebreak
+
+\tableofcontents
+
+\pagebreak
+
+\section{Introduction}
+\subsection{Background}
+Taking a collective decision as a population is difficult. To solve this issue, voting systems with defined rules are used. They are used to show common preferences within a population, for example what politician a population wants to see elected. Several types of systems have been designed and there are a myriad of variations of those systems. They range from simple methods such as “most votes win” to complex processes that can only be practically carried out by a computer. However, practically all voting systems are algorithmic in nature, which makes them interesting to study for both Computer Scientists and Mathematicians. When deciding on what systems that shall be used, it is useful to know what differences and similarities they have.
+\subsection{Purpouse}
+The purpose of this essay is to evaluate differences and similarities in terms of election results in three different voting systems: Single Transferable Vote (STV), First-Past-The-Post (FPTP) and the Schulze Method. I will only be investigating and discussing differences and similarities in the results of the methods, not touching on how practically feasible the systems are in an actual election.
+\pagebreak
+\section{Theory}
+Theory will be here some day
+\section{Methodology}
+Methodology here
+All voting methods have been implemented in Typescript – mostly due to the author having previous experience with JavaScript. Typescript is a superset of JavaScript and compiles down to it. Typescript has some extra features compared to JavaScript but most importantly it has optional static type checking. Here is some example code in typescript:
+\begin{lstlisting}
+let helloWorld: string = 'Hello World' // This is a comment
+console.log(helloWorld)
+\end{lstlisting}
+\subsection{Modeling test data}
+
+
+\pagebreak
+\section{Specification of voting methods}
+This paper compares the results of theese voting methods
+\subsection{First-past-the-post}
+\subsubsection{Description}
+The first-past-the-post voting method is a method desiged for electing one or several candidates out of a set of candidates. In a first-past-the-post election the N candidates with most votes get elected.
+\subsubsection{Justification}
+The method is simple and can easily be understood. The first-past-the-post method is widely used in for example the United Kingdom and United States. Comparisons with this method can also be easily made.
+\subsubsection{Pseudocode}
+let $V$ be the set of votes with $V_{i}$ meaning votes for candidate $i$ \\
+let $N$ be number of candidates to be elected \\
+sort $V$ based on $V_{i}$\\
+slice $V$ between $0$ and $N$
+\subsubsection{Implementation}
+The first-past-the-post program is implemented in a single file. It takes the following inputs:
+\begin{lstlisting}
+ballots: Array<Array<number>> // Ex. [[0,1,2],[1,0,2],...]
+seats: number // Ex. 2
+\end{lstlisting}
+The ballot data is first mapped to only include first prefrences. Then the algorithm loops over the ballots and adds the votes for each candidate together:
+\begin{lstlisting}
+let results: Array<Result> = []
+// Loops over prefrences and adds/increments result
+for (var i = 0; i < firstPrefrences.length; i++) {
+    // Finds index in results array of candidate at i
+    let index = results.findIndex(obj => obj.cand === firstPrefrences[i])
+    // If candidate is not added to results
+    if (index === -1) {
+        results.push({ cand: firstPrefrences[i], votes: 1 })
+    } else {
+        // Increment count if already added in results
+        results[index].votes += 1;
+    }
+}
+\end{lstlisting}
+The results array is sorted and sliced to only include the $N$ candidates with most votes:
+\begin{lstlisting}
+// Sorts array by number of votes
+results.sort((a, b) => {
+    if (a.votes > b.votes) {
+        return -1
+    } else if (a.votes < b.votes) {
+        return 1
+    }
+    return 0
+})
+// Gets the first elements in the sorted array i.e the winners
+let winners = results.slice(0, seats)
+// Returns array of winners
+return winners.map(cand => cand.cand)
+\end{lstlisting}
+\subsection{Single transferable vote}
+\subsubsection{Description}
+\subsubsection{Justification}
+\subsubsection{Pseudocode}
+\subsubsection{Implementation}
+\subsection{Schulze}
+\subsubsection{Description}
+\subsubsection{Justification}
+\subsubsection{Pseudocode}
+\subsubsection{Implementation}
+
+\section{Evaluation of methods}
+\subsection{Sample I}
+\subsection{Sample II}
+\subsection{Sample III}
+
+\section{Conclusion}
+
+
+
+
+
+%\subsection{ Heading Here}
+%This is some code.
+%\lstinputlisting[language=JavaScript]{code/examples/example.js}
+
+
+
+%\section{Conclusion}
+%Write your conclusion here. And here is a citation:
+%\textcite{sigfridsson2}
+
+%And another one here (\textcite{sigfridsson})
+
+%\section{Source code}
+%\lstinputlisting[language=JavaScript]{code/test.js}
+
+\pagebreak
+
+\printbibliography
+
+
+\section{Appendix}
+First-past-the-post program
+\lstinputlisting[language=JavaScript]{code/index.ts}
+
+
+\end{document}
