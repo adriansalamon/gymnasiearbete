@@ -29,3 +29,5 @@ let input = createInput(ideologies, parties, ballots)
 console.log(stv(input, seats))
 console.log(fptp(input, seats))
 console.log(schulze(input, seats))
+
+// Hello world
