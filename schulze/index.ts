@@ -36,6 +36,7 @@ function getPairs(ballots: Array<Array<number>>): Array<Pair> {
         }
 
     }
+  
     return result
 }
 
@@ -67,6 +68,18 @@ function getStrongestPath(a: number, b: number, strongestPaths: Array<Pair>): nu
 }
 
 function getResult(strongestPaths: Array<Pair>, seats: number, c: number): Array<number> {
+    /*
+    let fullResult: Array<Object> = []
+    for (var i = 0; i < c; i++) {
+        for (var j = 0; j < c; j++) {
+            fullResult.push({a:i,b:j, val: getStrongestPath(i, j, strongestPaths) })
+        }
+    }
+    var fs = require('fs')
+    fs.writeFile('res.json', JSON.stringify(fullResult))
+    */
+    
+    
     let wins: Object = {}
     // Loops through strongest paths and adds results onto the wins object
     for (var i = 0; i < c; i++) {

@@ -7,8 +7,8 @@ import schulze from './schulze'
 
 const seats = 3;
 
-const parties = 12
-const ballots = 1200
+const parties = 9
+const ballots = 500
 
 const ideologies: Array<Ideology> = [{
     size: 0.2,
@@ -24,9 +24,18 @@ const ideologies: Array<Ideology> = [{
     ideologyPower: 0.7,
 }]
 
-let input = createInput(ideologies, parties, ballots)
 
-let results = {stv: stv(input, seats).winners, fptp: fptp(input, seats), schulze: schulze(input, seats) }
+let results: Array<Object> = []
 
+for (var i = 0; i <= 100; i++) {
+    console.log(i)
+    let input = createInput(ideologies, parties, ballots)
+    results.push({stv: stv(input, seats).winners, fptp: fptp(input, seats), schulze: schulze(input, seats)})
+}
+
+
+ /*
+ let input = createInput(ideologies, parties, ballots)
+ results.push({stv: stv(input, seats).winners, fptp: fptp(input, seats), schulze: schulze(input, seats)})
+*/
 console.log(results)
-// Hello worlds

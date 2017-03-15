@@ -9,13 +9,15 @@ export function createParties(numberOfParties: number, ideologies: Array<Ideolog
 
     let parties: Array<Party> = []
     const initialNumberOfParties = numberOfParties
-
     // Loops while not every party has an ideology
     while (numberOfParties > 0) {
         // Loops though all future party indexes
         for (let partyIndex = 0; partyIndex < initialNumberOfParties; partyIndex++) {
+
             // Loops through all ideologies
             for (let ideologyIndex = 0; ideologyIndex < tempIdeologies.length; ideologyIndex++) {
+                if(numberOfParties <= 0)
+                    break
                 // Current ideology in loop
                 const ideology = tempIdeologies[ideologyIndex]
                 //Gets the number of parties that should belong to an ideology
