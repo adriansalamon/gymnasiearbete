@@ -1,15 +1,15 @@
-let fakeData = [[0, 2, 1, 4, 3], [0, 2, 1, 4, 3], [0, 2, 1, 4, 3], [0, 2, 1, 4, 3], [0, 2, 1, 4, 3], [0, 3, 4, 2, 1], [0, 3, 4, 2, 1], [0, 3, 4, 2, 1], [0, 3, 4, 2, 1], [0, 3, 4, 2, 1], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [2, 0, 1, 4, 3], [2, 0, 1, 4, 3], [2, 0, 1, 4, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 1, 0, 3, 4], [2, 1, 0, 3, 4], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2]]
+//let fakeData = [[0, 2, 1, 4, 3], [0, 2, 1, 4, 3], [0, 2, 1, 4, 3], [0, 2, 1, 4, 3], [0, 2, 1, 4, 3], [0, 3, 4, 2, 1], [0, 3, 4, 2, 1], [0, 3, 4, 2, 1], [0, 3, 4, 2, 1], [0, 3, 4, 2, 1], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [2, 0, 1, 4, 3], [2, 0, 1, 4, 3], [2, 0, 1, 4, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 1, 0, 3, 4], [2, 1, 0, 3, 4], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2]]
 
 
-interface PrefrenceThingy {
+interface Pair {
     a: number,
     b: number,
     num: number
 }
 
 // Gets the pairwise comparison between all candidates and the number of prefrences. Ex. 120 ballots prefer a > b
-function getPairs(ballots: Array<Array<number>>): Array<PrefrenceThingy> {
-    let result: Array<PrefrenceThingy> = []
+function getPairs(ballots: Array<Array<number>>): Array<Pair> {
+    let result: Array<Pair> = []
     // Loops throug all ballots
     for (var k = 0; k < ballots.length; k++) {
         var ballot = ballots[k];
@@ -41,7 +41,7 @@ function getPairs(ballots: Array<Array<number>>): Array<PrefrenceThingy> {
 }
 
 // Finds number of prefrences for a > b and returns that value
-function d(a: number, b: number, pairs: Array<PrefrenceThingy>) {
+function d(a: number, b: number, pairs: Array<Pair>) {
     // Finds pair index
     let pairIndex = pairs.findIndex(obj => obj.a === a && obj.b === b)
     // If index exists return the number of prefrences at that index
@@ -51,13 +51,13 @@ function d(a: number, b: number, pairs: Array<PrefrenceThingy>) {
 }
 
 // Adds a path to the strongest path array and returns the new array
-function addPath(a: number, b: number, num: number, strongestPaths: Array<PrefrenceThingy>): Array<PrefrenceThingy> {
+function addPath(a: number, b: number, num: number, strongestPaths: Array<Pair>): Array<Pair> {
     strongestPaths.push({ a, b, num })
     return strongestPaths
 }
 
 // Gets the strongest path between a and b in the strongestPaths array
-function getStrongestPath(a: number, b: number, strongestPaths: Array<PrefrenceThingy>): number {
+function getStrongestPath(a: number, b: number, strongestPaths: Array<Pair>): number {
     // Gets all paths
     let allPaths = strongestPaths.filter(obj => obj.a === a && obj.b === b)
     // Gets their values
@@ -67,7 +67,7 @@ function getStrongestPath(a: number, b: number, strongestPaths: Array<PrefrenceT
     return maxValue
 }
 
-function getResult(strongestPaths: Array<PrefrenceThingy>, seats: number, c: number): Array<number> {
+function getResult(strongestPaths: Array<Pair>, seats: number, c: number): Array<number> {
     let wins: Object = {}
     // Loops through strongest paths and adds results onto the wins object
     for (var i = 0; i < c; i++) {
@@ -94,7 +94,7 @@ function getResult(strongestPaths: Array<PrefrenceThingy>, seats: number, c: num
     for (var i = 0; i <= Object.keys(wins).length; i++) {
         if (wins[i]) {
             // Pushes result onto array§
-            winsArray.push({ key: i, wins: [wins[i]] })
+            winsArray.push({ key: i, wins: wins[i] })
         } else {
             // If no wins push to losers array
             losers.push(i)
@@ -103,9 +103,9 @@ function getResult(strongestPaths: Array<PrefrenceThingy>, seats: number, c: num
     }
     // Sorts the array based on number of pairwise strongest path comparisons won
     winsArray.sort((a, b) => {
-        if (a.wins > b.wins) {
+        if (a.wins.length > b.wins.length) {
             return -1
-        } if (a.wins < b.wins) {
+        } if (a.wins.length < b.wins.length) {
             return 1
         }
         return 0
@@ -114,13 +114,14 @@ function getResult(strongestPaths: Array<PrefrenceThingy>, seats: number, c: num
     for (var i = 0; i < losers.length; i++) {
         winsArray.push({ key: losers[i], wins: [] })
     }
+
     // Gets final winners by slicing and mapping array
     let result = winsArray.slice(0, seats).map(val => val.key)
     return result
 }
 
 // Finds max as a step in the algorithm for finding strongest path
-function findMax(j: number, k: number, i: number, strongestPaths: Array<PrefrenceThingy>) {
+function findMax(j: number, k: number, i: number, strongestPaths: Array<Pair>) {
      let min = Math.min(getStrongestPath(j, i, strongestPaths), getStrongestPath(i, k, strongestPaths))
      let max = Math.max(getStrongestPath(j, k, strongestPaths), min)
      return max
@@ -130,9 +131,9 @@ function findMax(j: number, k: number, i: number, strongestPaths: Array<Prefrenc
 export default function calculateResult(input: Array<Array<number>>, seats: number): Array<number> {
     // Gets the pairs of candidates and their count
     // Ex 120 votes prefer a > b
-    let pairs: Array<PrefrenceThingy> = getPairs(input)
+    let pairs: Array<Pair> = getPairs(input)
 
-    let strongestPaths: Array<PrefrenceThingy> = []
+    let strongestPaths: Array<Pair> = []
     // Number of candidates
     let c = input[0].length
 
@@ -167,5 +168,3 @@ export default function calculateResult(input: Array<Array<number>>, seats: numb
 
     return result;
 }
-
-console.log(calculateResult(fakeData, 2))

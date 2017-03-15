@@ -68,10 +68,10 @@ export function transferSurplus(candNumber: number, tree: Array<CandidateNode>, 
     const nonSurplusFrac = 1 - surplusFrac
 
     // Multiplies values in surplus branch to decrese to be equal to quota
-    cand = cand.multiply(nonSurplusFrac)
+    tree[candIndex] = tree[candIndex].multiply(nonSurplusFrac)
     
     // Maps over all the children, multiplies their brances by the surplus fraction and returns.
-    let transferChildren = cand.children.map(child => {
+    let transferChildren = tree[candIndex].children.map(child => {
         child = child.multiply(surplusFrac)
         return child
     })

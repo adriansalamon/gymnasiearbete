@@ -16,6 +16,10 @@ export default function runElection(input: Array<Array<number>>, seats: number):
     // Build the base tree based in input
     let tree = buildTree(input)
 
+    var fs = require('fs')
+    fs.writeFile('initialInput.json', JSON.stringify(input))
+    fs.writeFile('initialTree.json', JSON.stringify(tree))
+
     // Loop through while all seats are not filled
     while(seats > winners.length) {
         // Check for winners
