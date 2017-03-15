@@ -2,13 +2,13 @@ import { Ideology } from './generator/interfaces'
 import createInput from './generator'
 
 import fptp from './fptp'
-import stv from './stv'
+import { runElection as stv} from './stv'
 import schulze from './schulze'
 
-const seats = 5;
+const seats = 3;
 
-const parties = 16
-const ballots = 200
+const parties = 12
+const ballots = 1200
 
 const ideologies: Array<Ideology> = [{
     size: 0.2,
@@ -26,8 +26,7 @@ const ideologies: Array<Ideology> = [{
 
 let input = createInput(ideologies, parties, ballots)
 
-console.log(stv(input, seats))
-console.log(fptp(input, seats))
-console.log(schulze(input, seats))
+let results = {stv: stv(input, seats).winners, fptp: fptp(input, seats), schulze: schulze(input, seats) }
 
-// Hello world
+console.log(results)
+// Hello worlds
