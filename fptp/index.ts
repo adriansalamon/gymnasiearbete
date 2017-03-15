@@ -6,7 +6,7 @@ interface Result {
 }
 
 // Calculates the winners in a First-past-the-post election
-function calculateWinners(input: Array<Array<number>>, seats: number) {
+export default function calculateWinners(input: Array<Array<number>>, seats: number) {
 
     // Maps input to first prefrences
     let firstPrefrences = input.map(el => {
@@ -43,6 +43,3 @@ function calculateWinners(input: Array<Array<number>>, seats: number) {
     // Returns array of winners
     return winners.map(cand => cand.cand)
 }
-
-
-console.log(calculateWinners(input, 1))
