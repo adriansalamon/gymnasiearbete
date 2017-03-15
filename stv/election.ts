@@ -6,19 +6,14 @@ interface Result {
 }
 
 // Calculates election result in an STV election
-export default function runElection(input: Array<Array<number>>, seats: number): Result {
+export function runElection(input: Array<Array<number>>, seats: number): Result {
     let winners: Array<number> = []
     let log: Array<string> = []
     // Droop quota
     const quota =  Math.floor((input.length / (seats + 1)) + 1)
     log.push(`Quota: ${quota}`)
-
     // Build the base tree based in input
     let tree = buildTree(input)
-
-    var fs = require('fs')
-    fs.writeFile('initialInput.json', JSON.stringify(input))
-    fs.writeFile('initialTree.json', JSON.stringify(tree))
 
     // Loop through while all seats are not filled
     while(seats > winners.length) {
@@ -58,6 +53,22 @@ export default function runElection(input: Array<Array<number>>, seats: number):
             log.push(`Transfered surplus from ${hadSurplus.filter((item, index, array) => array.indexOf(item) === index).join(', ')}`)
             continue
         }
+
+        // Checks if there are an equal number of candidates left as seats to be elected. If so, elect all
+        let allSeatsFilled = false
+        if (tree.length === seats) {
+            for (var i = 0; i < tree.length; i++) {
+                var cand = tree[i];
+                if (!winners.includes(cand.cand)) {
+                    allSeatsFilled = true
+                    winners = [...winners, cand.cand]
+                }
+            }
+        }
+        if (allSeatsFilled) {
+            continue
+        }
+
         // Eliminate lowest ranked
         // Finds the lowest ranked candidate. This is a bad algorithm I will need to fix later.
         let lowestRanked = 0
