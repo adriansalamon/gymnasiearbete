@@ -1,13 +1,26 @@
 \input{config.tex}
 \usepackage{hyperref}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{mathtools}
+
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+
+
 \hypersetup{
-    colorlinks,
-    citecolor=black,
-    filecolor=black,
-    linkcolor=black,
-    urlcolor=black
+	colorlinks,
+	citecolor=black,
+	filecolor=black,
+	linkcolor=black,
+	urlcolor=black
 }
 \usepackage{pseudocode}
+
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.14}
+
 
 \addbibresource{sample.bib}
 
@@ -22,7 +35,7 @@
 	{\LARGE Adrian Salamon\par}
 
 	\vspace{0.6cm}
- 	{\Large Kungsholmens gymnasium\par}
+	{\Large Kungsholmens gymnasium\par}
 	\vspace{0.4cm}
 	{\large Senior thesis\par}
 	\vspace{0.6cm}
@@ -34,14 +47,14 @@
 
 	\vfill
 
-% Bottom of the page
+	% Bottom of the page
 	{\large \today\par}
 \end{titlepage}
 
 \pagebreak
 
 \begin{abstract}
-The abstract text goes here.
+	The abstract text goes here.
 \end{abstract}
 
 \pagebreak
@@ -73,23 +86,23 @@ console.log(helloWorld)
 This paper compares the results of theese voting methods
 \subsection{First-past-the-post}
 \subsubsection{Description}
-The first-past-the-post voting method is a method desiged for electing one or several candidates out of a set of candidates. In a first-past-the-post election the N candidates with most votes get elected.
+The first-past-the-post voting method is a method desiged for electing one or several candidates out of a set of candidates. Each voter has one (1) vote which may be allocated to any candidate. In a first-past-the-post election the N candidates with most votes get elected.
 \subsubsection{Justification}
 The method is simple and can easily be understood. The first-past-the-post method is widely used in for example the United Kingdom and United States. Comparisons with this method can also be easily made.
 \subsubsection{Pseudocode}
-let $V$ be the set of votes with $V_{i}$ meaning votes for candidate $i$ \\
+let $V$ be the set of votes with $V_{i}$ being the number of votes for candidate $i$ \\
 let $N$ be number of candidates to be elected \\
 sort $V$ based on $V_{i}$\\
 slice $V$ between $0$ and $N$
 \subsubsection{Implementation}
 The first-past-the-post program is implemented in a single file. It takes the following inputs:
 \begin{lstlisting}
-ballots: Array<Array<number>> // Ex. [[0,1,2],[1,0,2],...]
+ballots: number[][] // Ex. [[0,1,2],[1,0,2],...]
 seats: number // Ex. 2
 \end{lstlisting}
-The ballot data is first mapped to only include first prefrences. Then the algorithm loops over the ballots and adds the votes for each candidate together:
+The ballot data is first mapped to only include first prefrences. Then the algorithm loops over the ballots and gets the sum of votes for each candidate:
 \begin{lstlisting}
-let results: Array<Result> = []
+let results: Result[] = []
 // Loops over prefrences and adds/increments result
 for (var i = 0; i < firstPrefrences.length; i++) {
     // Finds index in results array of candidate at i
@@ -121,9 +134,47 @@ return winners.map(cand => cand.cand)
 \end{lstlisting}
 \subsection{Single transferable vote}
 \subsubsection{Description}
+The Single Transferable Vote method is a more complicated algorithm than the first-past-the-post method. Voters are given ballots where they are supposed to rank candidates in order. The specific rules for if you need to rank all candidates or rank several candidates at the same value not can vary. For the sake of simplicity, in this implementation, all candidates must be ranked at unique and linear values. A ballot may look like this:
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=140px]{ballot}
+	\caption{Sample STV ballot}
+	\label{STV ballot}
+\end{figure}
+This means that there is more data availible for detrermining the result of the election which the method can take advantage of. Votes are, if needed, transfered between choices within a ballot, hence the name Single Transferable Vote. The method relies on the concept of a quota, the number of votes you need to be elected. The Droop-Quota, defined as $(\frac{\text{total valid poll}}{\text{seats} + 1})+1$, is often used. If a candidate recieves equal or more votes than the quota, he/she is elected. If the number of votes exxeed the quota, a fraction of the votes are transfered to the next choice on the ballots that voted for the elected candidate. This process is repeated until there are no candidates with more votes than the quota. If there still are seats yet to be filled, the candidate with fewest votes is eliminated and his/her votes are transfered to the next choice on those ballots. This process is repeated until all seats are filled. The process can become quite complex with many ballots and transfering fractional votes. In order to resolve large scale elections, a computer in essential.
 \subsubsection{Justification}
+STV is an established voting method in use in several countries. It is used for parlimentary elections in Ireland, Malta and Australia as well as being used in local and regional elections across the world.
 \subsubsection{Pseudocode}
+let $quota$ be the quota \\
+let $seats$ be the number of seats \\
+let $winners$ be the list of elected candidates \\
+let $votes$ be the set of votes with $votes_{i}$ signinfying votes for candidate $i$\\\\
+while $\left\vert{winners}\right\vert < seats$\\
+\tab if any candidate $i \notin winners$ and $votes_{i} \geq quota$ \\
+\tab\tab add $i$ to $winners$ \\
+\tab\tab continue \\
+\tab end if \\
+\tab if any candidate $i$ where $votes_{i} > quota$\\
+\tab\tab multiply $votes_{i}$ with $(1 - \frac{\text{surplus votes}_{i}}{votes_{i}})$ \\
+\tab\tab multiply next prefrencences for $votes_{i}$ with $\frac{\text{surplus votes}_{i}}{votes_{i}}$ and \\ \tab\tab distribute into $votes$\\
+\tab\tab continue \\
+\tab end if \\
+\tab if $\left\vert{votes}\right\vert = seats$ \\
+\tab\tab add all $votes \notin winners$ to $winners$ \\
+\tab\tab continue \\
+\tab end if \\
+\tab $k \coloneqq$ index of smallest $votes_{i}$ \\
+\tab eliminate $votes_{k}$ and distribute all next-prefrence votes for candidate $k$ \tab into $votes$\\
+end while
 \subsubsection{Implementation}
+The single transferable vote algorithm uses a tree structure to represent the state of the election. Every candidate is a top-level node with an attribute showing the number of current votes for the candidate. Each node has child nodes that show the next-prefrences of the voters for a particular candidate. By multiplying and merging branches it is simple to transfer votes.
+\begin{figure}
+	\centering
+	\includegraphics[height=200px]{Tree}
+	\caption{This is a tree}
+	\label{Tree structure}
+\end{figure}
+
 \subsection{Schulze}
 \subsubsection{Description}
 \subsubsection{Justification}
@@ -157,6 +208,61 @@ return winners.map(cand => cand.cand)
 %\lstinputlisting[language=JavaScript]{code/test.js}
 
 \pagebreak
+
+
+
+
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+		\begin{axis}[
+			ybar stacked,
+			width = 0.9\textwidth,
+			height = 0.5\textwidth,
+			cycle list = {black!80,black!50,black!20},
+			legend style={at={(0.5,-0.25)},
+			anchor=north,legend columns=-1},
+      x tick style = transparent,
+			ylabel = {Elections won},
+			xlabel = {Party},
+			ymajorgrids = true,
+			every axis plot/.append style={fill,draw=none,no markers},
+      ymin = 0
+      ]
+			\addplot coordinates
+			{(0, 1)(1, 1)(2, 1)(3, 0)(4, 0)(5, 0)(6, 0)};
+			\addplot coordinates
+			{(0, 1)(1, 1)(2, 1)(3, 0)(4, 0)(5, 0)(6, 0)};
+			\addplot coordinates
+			{(0, 0)(1, 1)(2, 1)(3, 0)(4, 1)(5, 0)(6, 0)};
+			\legend{FPTP, STV, Schulze}
+		\end{axis}
+	\end{tikzpicture}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+		\begin{axis}[
+			ybar,
+			width = 0.9\textwidth,
+			height = 0.5\textwidth,
+			legend style={at={(0.5,-0.25)},
+			anchor=north,legend columns=-1},
+      x tick style = transparent,
+			ylabel = {First prefrence votes},
+			xlabel = {Party},
+			ymajorgrids = true,
+			every axis plot/.append style={fill,draw=none,no markers},
+      ymin = 0
+      ]
+			\addplot coordinates
+			{(0, 17)(1, 36)(2, 32)(4, 9)(5, 5)(6, 1)};
+		\end{axis}
+	\end{tikzpicture}
+\end{figure}
+
+
 
 \printbibliography
 
