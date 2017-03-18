@@ -1,13 +1,13 @@
 import CandidateNode from './candidate'
 
 // Builds the initial tree structure
-export function buildTree(ballots: Array<Array<number>>): Array<CandidateNode> {
+export function buildTree(ballots: number[][]): CandidateNode[] {
 
     // Reduces the ballots into a tree via the addBallot function
     const trees = ballots.reduce(addBallot, [])
 
     // Reducer function for the ballots
-    function addBallot(tree: Array<CandidateNode>, ballot: Array<number>) {
+    function addBallot(tree: CandidateNode[], ballot: number[]) {
         let level = tree
 
         // For each vote in ballot, call the addVote function
@@ -34,12 +34,12 @@ export function buildTree(ballots: Array<Array<number>>): Array<CandidateNode> {
 }
 
 // Checks if candidate has a node already at a level.
-function hasCandidateNode(level: Array<CandidateNode>, cand: number): boolean {
+function hasCandidateNode(level: CandidateNode[], cand: number): boolean {
     return level.some(obj => obj.cand === cand)
 }
 
 // Eliminates a candidate, returns a new tree.
-export function eliminate(lowestRanked: number, tree: Array<CandidateNode>, winners: Array<number>): Array<CandidateNode> {
+export function eliminate(lowestRanked: number, tree: CandidateNode[], winners: number[]): CandidateNode[] {
     // New tree
     let newTree = [...tree]
     // Save the children for transfering
@@ -51,14 +51,14 @@ export function eliminate(lowestRanked: number, tree: Array<CandidateNode>, winn
 }
 
 // Checks if any candidate has surplus votes
-export function isSurplus(tree: Array<CandidateNode>, quota: number): boolean {
+export function isSurplus(tree: CandidateNode[], quota: number): boolean {
     // Maps array and compares count to quota and then reduces to find if any comparison retured true.
     let surplus = tree.map(cand => (cand.count > quota)).reduce((a,b) => a || b)
     return surplus
 }
 
 // Transfers the surplus from a candidate. Returns a new tree.
-export function transferSurplus(candNumber: number, tree: Array<CandidateNode>, quota: number, winners: Array<number>): Array<CandidateNode> {
+export function transferSurplus(candNumber: number, tree: CandidateNode[], quota: number, winners: number[]): CandidateNode[] {
     // Find index of candidate in tree
     let candIndex = tree.findIndex(cand => cand.cand === candNumber)
     let cand = tree[candIndex]
@@ -82,7 +82,7 @@ export function transferSurplus(candNumber: number, tree: Array<CandidateNode>, 
 }
 
 // Distributes votes from a list onto the tree. Returns a new tree.
-function distribute(treeList: Array<CandidateNode>, tree: Array<CandidateNode>, winners: Array<number>): Array<CandidateNode> {
+function distribute(treeList: CandidateNode[], tree: CandidateNode[], winners: number[]): CandidateNode[] {
     // Loops through each candidate in the list
     for (let i = 0; i < treeList.length; i++) {
         let cand = treeList[i];

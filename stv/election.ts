@@ -1,24 +1,27 @@
 import { buildTree, eliminate, isSurplus, transferSurplus } from './tree'
 
 interface Result {
-    log: Array<string>,
-    winners: Array<number>
+    log: string[],
+    winners: number[]
 }
 
 // Calculates election result in an STV election
-export function runElection(input: Array<Array<number>>, seats: number): Result {
-    let winners: Array<number> = []
-    let log: Array<string> = []
+export function runElection(input: number[][], seats: number): Result {
+    let winners: number[] = []
+    let log: string[] = []
     // Droop quota
     const quota =  Math.floor((input.length / (seats + 1)) + 1)
     log.push(`Quota: ${quota}`)
     // Build the base tree based in input
     let tree = buildTree(input)
 
+    var fs = require('fs')
+    fs.writeFile('tree.json', JSON.stringify(tree))
+
     // Loop through while all seats are not filled
     while(seats > winners.length) {
         // Check for winners
-        let newWinners: Array<number> = []
+        let newWinners: number[] = []
         // Loops through tree
         for (var i = 0; i < tree.length; i++) {
             const cand = tree[i]
@@ -35,7 +38,7 @@ export function runElection(input: Array<Array<number>>, seats: number): Result 
             continue
         }
         // Check for surplus
-        let hadSurplus: Array<number> = []
+        let hadSurplus: number[] = []
         // Loop while there is a surplus of votes for a candidate
         while(isSurplus(tree, quota)) {
             // Loop through tree 

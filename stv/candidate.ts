@@ -2,7 +2,7 @@
 export default class CandidateNode {
     public cand: number
     public count: number
-    public children: Array<CandidateNode>
+    public children: CandidateNode[]
 
     constructor(cand: number, count: number) {
         this.cand = cand;
@@ -45,7 +45,7 @@ export default class CandidateNode {
 }
 
 // Combines children for two arrays at a specific child and returns a node
-function addChildren(aChildren: Array<CandidateNode>, bChildren: Array<CandidateNode>, child: number): CandidateNode {
+function addChildren(aChildren: CandidateNode[], bChildren: CandidateNode[], child: number): CandidateNode {
     // A has the child and B has the child
     const aHas = aChildren.some(obj => obj.cand === child)
     const bHas = bChildren.some(obj => obj.cand === child)

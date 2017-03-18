@@ -1,13 +1,13 @@
 import {Ideology, IdeologyWithProbabilities, IdeologyWithParties, Party} from './interfaces'
 
 // Creates the parties and assigns them an ideology based on their relative sizes.
-export function createParties(numberOfParties: number, ideologies: Array<Ideology>): Array<Party> {
+export function createParties(numberOfParties: number, ideologies: Ideology[]): Party[] {
 
-    const tempIdeologies: Array<IdeologyWithParties> = ideologies.map((ideology) => {
+    const tempIdeologies: IdeologyWithParties[] = ideologies.map((ideology) => {
         return Object.assign({}, ideology, { numberOfParties: 0 })
     })
 
-    let parties: Array<Party> = []
+    let parties: Party[] = []
     const initialNumberOfParties = numberOfParties
     // Loops while not every party has an ideology
     while (numberOfParties > 0) {
@@ -39,8 +39,8 @@ export function createParties(numberOfParties: number, ideologies: Array<Ideolog
 
 
 // Assigns the probability of the voters within an ideology
-export function assignProbabilityToIdeology(ideologies: Array<Ideology>, parties: Array<Party>): Array<IdeologyWithProbabilities> {
-    let result: Array<IdeologyWithProbabilities> = []
+export function assignProbabilityToIdeology(ideologies: Ideology[], parties: Party[]): IdeologyWithProbabilities[] {
+    let result: IdeologyWithProbabilities[] = []
 
     // Loops through each ideology
     for (var ideologyIndex = 0; ideologyIndex < ideologies.length; ideologyIndex++) {
@@ -70,7 +70,7 @@ export function assignProbabilityToIdeology(ideologies: Array<Ideology>, parties
 
 
 // Assigns relative sizes to all parties based on their ideologies
-function assignPartySizes(parties: Array<Party>, ideologies: Array<IdeologyWithParties>): Array<Party> {
+function assignPartySizes(parties: Party[], ideologies: IdeologyWithParties[]): Party[] {
     // Loops through all ideologies
     for (var ideologyIndex = 0; ideologyIndex < ideologies.length; ideologyIndex++) {
         const ideology = ideologies[ideologyIndex]
@@ -103,14 +103,14 @@ function fy (y: number, k: number): number {
 }
 
 // Normalizes an array of numbers so that the sum is 1
-function normalize(array: Array<number | undefined>): Array<number> {
+function normalize(array: (number | undefined)[]): number[] {
     const sum = array.reduce((acc, val) => acc + val)
     const normalized = array.map(val => val/sum)
     return normalized
 }
 
 // Calculates the distribution of votes as a negative exponential distribution
-function calculateDistribution (parties: number, k:number): Array<number> {
+function calculateDistribution (parties: number, k:number): number[] {
     // Adjusts the constant to vary more and set 0.5 as the default
     const adjustedK = (k**2)*0.5
     // Defines the range of the distribution where y > 0.01
@@ -122,7 +122,7 @@ function calculateDistribution (parties: number, k:number): Array<number> {
 }
 
 // Finds x values recursively and returns the result
-function calculateXValues(parties: number, k: number, stepSize: number, x: number, result: Array<number>):Array<number> {
+function calculateXValues(parties: number, k: number, stepSize: number, x: number, result: number[]):number[] {
     if (parties === 0) {
         // Returns result at the end of recursion
         return result

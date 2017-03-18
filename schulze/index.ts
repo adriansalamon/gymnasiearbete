@@ -1,4 +1,5 @@
 //let fakeData = [[0, 2, 1, 4, 3], [0, 2, 1, 4, 3], [0, 2, 1, 4, 3], [0, 2, 1, 4, 3], [0, 2, 1, 4, 3], [0, 3, 4, 2, 1], [0, 3, 4, 2, 1], [0, 3, 4, 2, 1], [0, 3, 4, 2, 1], [0, 3, 4, 2, 1], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [2, 0, 1, 4, 3], [2, 0, 1, 4, 3], [2, 0, 1, 4, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 1, 0, 3, 4], [2, 1, 0, 3, 4], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2]]
+var fs = require('fs')
 
 interface Pair {
     a: number,
@@ -7,13 +8,13 @@ interface Pair {
 }
 
 // Gets the pairwise comparison between all candidates and the number of prefrences. Ex. 120 ballots prefer a > b
-function getPairs(ballots: Array<Array<number>>): Array<Pair> {
-    let result: Array<Pair> = []
+function getPairs(ballots: number[][]): Pair[] {
+    let result: Pair[] = []
     // Loops throug all ballots
     for (var k = 0; k < ballots.length; k++) {
         var ballot = ballots[k];
         // Temp array that stores which candidates are prefered over current candidate in the loop
-        let preferred: Array<number> = []
+        let preferred: number[] = []
         //Loops through each ballot
         for (var i = 0; i < ballot.length; i++) {
             var vote = ballot[i];
@@ -41,7 +42,7 @@ function getPairs(ballots: Array<Array<number>>): Array<Pair> {
 }
 
 // Finds number of prefrences for a > b and returns that value
-function d(a: number, b: number, pairs: Array<Pair>) {
+function d(a: number, b: number, pairs: Pair[]) {
     // Finds pair index
     let pairIndex = pairs.findIndex(obj => obj.a === a && obj.b === b)
     // If index exists return the number of prefrences at that index
@@ -51,13 +52,13 @@ function d(a: number, b: number, pairs: Array<Pair>) {
 }
 
 // Adds a path to the strongest path array and returns the new array
-function addPath(a: number, b: number, num: number, strongestPaths: Array<Pair>): Array<Pair> {
+function addPath(a: number, b: number, num: number, strongestPaths: Pair[]): Pair[] {
     strongestPaths.push({ a, b, num })
     return strongestPaths
 }
 
 // Gets the strongest path between a and b in the strongestPaths array
-function getStrongestPath(a: number, b: number, strongestPaths: Array<Pair>): number {
+function getStrongestPath(a: number, b: number, strongestPaths: Pair[]): number {
     // Gets all paths
     let allPaths = strongestPaths.filter(obj => obj.a === a && obj.b === b)
     // Gets their values
@@ -67,18 +68,18 @@ function getStrongestPath(a: number, b: number, strongestPaths: Array<Pair>): nu
     return maxValue
 }
 
-function getResult(strongestPaths: Array<Pair>, seats: number, c: number): Array<number> {
+function getResult(strongestPaths: Pair[], seats: number, c: number): number[] {
     /*
-    let fullResult: Array<Object> = []
+    let fullResult: Object[] = []
     for (var i = 0; i < c; i++) {
         for (var j = 0; j < c; j++) {
-            fullResult.push({a:i,b:j, val: getStrongestPath(i, j, strongestPaths) })
+            if (i !== j) {
+                fullResult.push({a:i,b:j, val: getStrongestPath(i, j, strongestPaths) })
+            }
         }
     }
-    var fs = require('fs')
     fs.writeFile('res.json', JSON.stringify(fullResult))
-    */
-    
+    */    
     
     let wins: Object = {}
     // Loops through strongest paths and adds results onto the wins object
@@ -97,11 +98,11 @@ function getResult(strongestPaths: Array<Pair>, seats: number, c: number): Array
     }
     interface Result {
         key: number,
-        wins: Array<number>
+        wins: number[]
     }
 
-    let winsArray: Array<Result> = []
-    let losers: Array<number> = []
+    let winsArray: Result[] = []
+    let losers: number[] = []
     // Converts the object into an array
     for (var i = 0; i <= Object.keys(wins).length; i++) {
         if (wins[i]) {
@@ -133,19 +134,21 @@ function getResult(strongestPaths: Array<Pair>, seats: number, c: number): Array
 }
 
 // Finds max as a step in the algorithm for finding strongest path
-function findMax(j: number, k: number, i: number, strongestPaths: Array<Pair>) {
+function findMax(j: number, k: number, i: number, strongestPaths: Pair[]) {
      let min = Math.min(getStrongestPath(j, i, strongestPaths), getStrongestPath(i, k, strongestPaths))
      let max = Math.max(getStrongestPath(j, k, strongestPaths), min)
      return max
 }
 
 // Calculates  result in a Schulze method election
-export default function calculateResult(input: Array<Array<number>>, seats: number): Array<number> {
+export default function calculateResult(input: number[][], seats: number): number[] {
     // Gets the pairs of candidates and their count
     // Ex 120 votes prefer a > b
-    let pairs: Array<Pair> = getPairs(input)
+    let pairs: Pair[] = getPairs(input)
 
-    let strongestPaths: Array<Pair> = []
+    // writePairsToFile(pairs)
+
+    let strongestPaths: Pair[] = []
     // Number of candidates
     let c = input[0].length
 
@@ -179,4 +182,22 @@ export default function calculateResult(input: Array<Array<number>>, seats: numb
     let result = getResult(strongestPaths, seats, c)
 
     return result;
+}
+
+function writePairsToFile(pairs: Pair[]) {
+    let newPairs = [...pairs]
+    newPairs.sort((a,b) => {
+        if (a.a > b.a) {
+            return 1
+        } else if (a.a < b.a) {
+            return -1
+        }
+        if (a.b > b.b) {
+            return 1
+        } else if (a.b < b.b) {
+            return -1
+        }
+        return 0
+    })
+    fs.writeFile('pairs.json', JSON.stringify(newPairs))
 }

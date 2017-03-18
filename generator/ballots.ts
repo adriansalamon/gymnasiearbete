@@ -2,9 +2,9 @@ import { Ideology, IdeologyWithProbabilities } from './interfaces'
 
 
 // Generates the ballots, essentially the output of the program
-export function generateBallots(numberOfBallots: number, prob: Array<number>, parties: Array<number>): Array<Array<number>> {
+export function generateBallots(numberOfBallots: number, prob: number[], parties: number[]): number[][] {
     // Create temp array combining probability and possib
-    let temp: Array<Array<number>> = []
+    let temp: number[][] = []
     for (var i = 0; i < parties.length; i++) {
         temp.push([prob[i], parties[i]])
     }
@@ -27,7 +27,7 @@ export function generateBallots(numberOfBallots: number, prob: Array<number>, pa
         return val
     })
 
-    let ballots: Array<Array<number>> = []
+    let ballots: number[][] = []
 
     for (var i = 0; i < numberOfBallots; i++) {
         const votes = distributeVotes(temp)
@@ -39,8 +39,8 @@ export function generateBallots(numberOfBallots: number, prob: Array<number>, pa
     return ballots
 }
 
-export function createAllBallots(ideologies: Array<Ideology>, ideologyProbabilities: Array<IdeologyWithProbabilities>, ballots: number): Array<Array<number>> {
-    let result: Array<Array<number>> = []
+export function createAllBallots(ideologies: Ideology[], ideologyProbabilities: IdeologyWithProbabilities[], ballots: number): number[][] {
+    let result: number[][] = []
 
     for (var i = 0; i < ideologies.length; i++) {
         const ideology = ideologies[i]
@@ -55,10 +55,10 @@ export function createAllBallots(ideologies: Array<Ideology>, ideologyProbabilit
 
 
 
-function distributeVotes(temp: Array<Array<number>>): Array<number> {
+function distributeVotes(temp: number[][]): number[] {
     let parties = [ ...temp ]
     let index = parties.length
-    let result: Array<number> = []
+    let result: number[] = []
 
     while (index > 0) {
         const rand = Math.random()

@@ -13,8 +13,8 @@ export interface IdeologyWithParties {
 }
 
 export interface IdeologyWithProbabilities {
-    probabilities: Array<number>,
-    parties: Array<number>
+    probabilities: number[],
+    parties: number[]
 }
 
 export interface Party {
