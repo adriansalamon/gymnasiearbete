@@ -7,8 +7,8 @@ import schulze from './schulze'
 
 const seats = 3;
 
-const parties = 7
-const ballots = 100
+const parties = 5
+const ballots = 50
 
 const ideologies: Ideology[] = [{
     size: 0.2,
@@ -27,6 +27,9 @@ const ideologies: Ideology[] = [{
 
 let results: Array<{ stv: number[], fptp: number[], schulze: number[], }> = []
 const input = createInput(ideologies, parties, ballots)
+
+var fs = require('fs')
+fs.writeFile('input.json', JSON.stringify(input))
 
 for (var j = 0; j <= 0; j++) {
     console.log(j)

@@ -341,3 +341,6 @@ typings/
 *.js
 out.json
 test.json
+paper/out/**
+paper/*.pdf
+paper/*.*.gz

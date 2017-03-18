@@ -15,8 +15,6 @@
 	urlcolor=black
 }
 \usepackage{pseudocode}
-
-\usepackage{xcolor}
 \usepackage{tikz}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.14}
@@ -79,8 +77,6 @@ let helloWorld: string = 'Hello World' // This is a comment
 console.log(helloWorld)
 \end{lstlisting}
 \subsection{Modeling test data}
-
-
 \pagebreak
 \section{Specification of voting methods}
 This paper compares the results of theese voting methods
@@ -145,10 +141,11 @@ This means that there is more data availible for detrermining the result of the 
 \subsubsection{Justification}
 STV is an established voting method in use in several countries. It is used for parlimentary elections in Ireland, Malta and Australia as well as being used in local and regional elections across the world.
 \subsubsection{Pseudocode}
+\label{Stv psuedocode}
 let $quota$ be the quota \\
 let $seats$ be the number of seats \\
 let $winners$ be the list of elected candidates \\
-let $votes$ be the set of votes with $votes_{i}$ signinfying votes for candidate $i$\\\\
+let $votes$ be the set of votes with $votes_{i}$ signinfying votes for candidate $i$\\
 while $\left\vert{winners}\right\vert < seats$\\
 \tab if any candidate $i \notin winners$ and $votes_{i} \geq quota$ \\
 \tab\tab add $i$ to $winners$ \\
@@ -167,18 +164,71 @@ while $\left\vert{winners}\right\vert < seats$\\
 \tab eliminate $votes_{k}$ and distribute all next-prefrence votes for candidate $k$ \tab into $votes$\\
 end while
 \subsubsection{Implementation}
-The single transferable vote algorithm uses a tree structure to represent the state of the election. Every candidate is a top-level node with an attribute showing the number of current votes for the candidate. Each node has child nodes that show the next-prefrences of the voters for a particular candidate. By multiplying and merging branches it is simple to transfer votes.
-\begin{figure}
+The single transferable vote algorithm uses a tree structure to represent the state of the election. Every candidate is a top-level node with an attribute showing the number of current votes for the candidate. Each node has child nodes that show the next prefrences of the voters for that particular candidate, see figure \ref{Tree structure}. It is easy to manipulate branches via recursion. Merging and multiplying branches is used when transfering votes from one candidate node to another. A candidate node is a Typescript class. It can be found in the \texttt{stv/candidate.ts} file and has the following properties and functions:
+\lstinputlisting[language=JavaScript]{code/candidateNode.ts}
+\begin{figure}[H]
 	\centering
 	\includegraphics[height=200px]{Tree}
-	\caption{This is a tree}
+	\caption{Simplified and shortened version of the tree structure. Each candidate is a top-level node with children, signifying the prefrences of the voters for that candidate.}
 	\label{Tree structure}
 \end{figure}
+With those functions, we can recursively manipulate branches and trees. In order to distribute the child nodes of an eliminated candidate, we just need to add each of those nodes to the corresponding top level nodes. In order to transfer surplus votes, we can multiply each child node with a factor and then distribute those nodes onto the top level nodes. The full source code for the tree manipuation functions can be found in \texttt{stv/tree.ts}.
+
+The input into the algorithm is a set of ballots. A ballot consists of an ordered list of candidates according to prefrence. Every candidate is represented by an integer. The input data is converted into the tree structure via the \texttt{buildTree} function. It can also be found in the \texttt{stv/tree.ts} file.
+
+The main procces of the program is found in the \texttt{stv/election.ts} file and runs the process defined in the psuedocode on page \pageref{Stv psuedocode}. The program takes the input defined above and a number representing the number of seats to elect as inputs. The process outputs an array of winning candidates as well as a log file.
 
 \subsection{Schulze}
 \subsubsection{Description}
+The Schulze Method is a method used mainly to determine results in a single-winner election but can also be used to provide rankings and elect multiple candidates in a single election. Ballots are identical to those of the single transferable vote, see figure \ref{STV ballot} on page \pageref{STV ballot}. The method is compliant with the Condorcet Criterion, which means that if there is a candidate who the majority prefers in a pairwise comparison with every other candidate, that candidate wins. As mentioned, this method relies on comparing the prefrences of every candidate to one another as shown in table \ref{Pairwise comparison matrix}. If there is a condorcet winner the process is simple: declare the condorcet winner a winner and run another iteration without that candidate. Repeat this process until all seats are filled. However, there can be condorcet ties, where there is no condorcet winner. There are multiple ways of resolving the tie, one of them being the Schulze Method.
+
+The Schulze Method resolves ties by investigating possible paths between candidates. For example, if out of a total of 50 ballots 30 ballots prefer $B>A$, 28 ballots prefer $A>C$ and 27 ballots prefer $C>B$, a path from $A$ to $B$ can be created by going $A \rightarrow C \rightarrow B$. The path is said to have the $strength$ of the weakest link in the path. In this example, the path strenght between A and B is 27 due to the link between $C$ and $B$ having a strenght of 27. There may be several paths between two candidates and the goal of the process is to find the strongest path between any candidate $A$ and $B$, written as $p[A,B]$. By finding the strongest path between all nodes a result can be obtained where $p[X,Y] \geq p[Y,X]$ wich means that candidate $X$ wins. The Shulze Method also provides a linear ranking between all candidates, for example that $E > B > A > C > D$. By selecting the $N$ top candidates you can use the method for a multi-seat election. As the process can become very complex as the number of candidates grow, a computer is needed to resolve large elections.
+
+The difficult problem in this method is finding the strongest path between candidates. The problem is called the widest path problem in graph theory. An efficent and relatively simple way to compute this problem is via the Floyd-Warshall algorithm which is used in the implementation. See \ref{Schulze psuedocode} for the full algorithm.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|c|c|c|c|c|}
+\cline{2-6}
+ & \multicolumn{1}{l|}{A} & \multicolumn{1}{l|}{B} & \multicolumn{1}{l|}{C} & \multicolumn{1}{l|}{D} & \multicolumn{1}{l|}{E} \\ \hline
+\multicolumn{1}{|l|}{A} & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{FFDDDD}17 & \cellcolor[HTML]{FFDDDD}14 & \cellcolor[HTML]{DDFFDD}35 & \cellcolor[HTML]{DDFFDD}30 \\ \hline
+\multicolumn{1}{|l|}{B} & \cellcolor[HTML]{DDFFDD}33 & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{FFDDDD}24 & \cellcolor[HTML]{DDFFDD}47 & \cellcolor[HTML]{DDFFDD}36 \\ \hline
+\multicolumn{1}{|l|}{C} & \cellcolor[HTML]{DDFFDD}36 & \cellcolor[HTML]{DDFFDD}26 & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{DDFFDD}40 & \cellcolor[HTML]{DDFFDD}42 \\ \hline
+\multicolumn{1}{|l|}{D} & \cellcolor[HTML]{FFDDDD}15 & \cellcolor[HTML]{FFDDDD}3 & \cellcolor[HTML]{FFDDDD}10 & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{FFDDDD}18 \\ \hline
+\multicolumn{1}{|l|}{E} & \cellcolor[HTML]{FFDDDD}20 & \cellcolor[HTML]{FFDDDD}14 & \cellcolor[HTML]{FFDDDD}8 & \cellcolor[HTML]{DDFFDD}32 & \cellcolor[HTML]{9B9B9B} \\ \hline
+\end{tabular}
+\caption{Pairwise comparison matrix used in the Schulze Mehtod. For example, 17 ballots prefer $A>B$ and 33 ballots prefer $B>A$.}
+\label{Pairwise comparison matrix}
+\end{table}
 \subsubsection{Justification}
+The Shulze Method is used by multiple organisations around the world. It has been used by various software organisations such as The Wikimedia Foundation, The Debian Project and Ubuntu. It is also used by political parties such as the Pirate Party in Sweden and various other countries. The process also differs greatly in both method and implementation from the two other voting methods used in this paper.
 \subsubsection{Pseudocode}
+\label{Schulze psuedocode}
+let $d[i,j]$ be the number of ballots that prefer candidate $i$ to candidate $j$\\
+let $p[i,j]$ be the strength of the strongest path from candidate $i$ to candidate $j$\\
+for $i$ from 1 to $C$\\
+\tab for $j$ form 1 to $C$\\
+\tab\tab if ($i \ne j$)\\
+\tab\tab\tab if ($d[i,j] > d[j,i]$)\\
+\tab\tab\tab\tab $p[i,j] \coloneqq d[i,j]$\\
+\tab\tab\tab else\\
+\tab\tab\tab\tab $p[i,j] \coloneqq 0$\\
+\tab\tab\tab endif \\
+\tab\tab endif \\
+\tab endfor \\
+endfor\\
+for $i$ from 1 to $C$\\
+\tab for $j$ form 1 to $C$\\
+\tab\tab if ($i \ne j$)\\
+\tab\tab\tab for $k$ from 1 to $C$\\
+\tab\tab\tab\tab if ($i \ne k \text{ and } j \ne k$)\\
+\tab\tab\tab\tab\tab $p[j,k] \coloneqq \text{max }(p[j,k], \text{ min }(p[j,k], p[i,k]))$\\
+\tab\tab\tab\tab endif \\
+\tab\tab\tab endfor \\
+\tab\tab endif \\
+\tab endfor \\
+endfor\\
+
 \subsubsection{Implementation}
 
 \section{Evaluation of methods}
@@ -269,7 +319,6 @@ The single transferable vote algorithm uses a tree structure to represent the st
 
 \section{Appendix}
 First-past-the-post program
-\lstinputlisting[language=JavaScript]{code/index.ts}
 
 
 \end{document}

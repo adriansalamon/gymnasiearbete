@@ -15,9 +15,6 @@ export function runElection(input: number[][], seats: number): Result {
     // Build the base tree based in input
     let tree = buildTree(input)
 
-    var fs = require('fs')
-    fs.writeFile('tree.json', JSON.stringify(tree))
-
     // Loop through while all seats are not filled
     while(seats > winners.length) {
         // Check for winners
