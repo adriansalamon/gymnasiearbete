@@ -8,5 +8,8 @@
             "es2016",
             "dom"
         ]
-    }
+    }, "exclude": [
+        "paper/code/*.ts",
+        "paper/code/**/*.ts"
+    ]
 }
