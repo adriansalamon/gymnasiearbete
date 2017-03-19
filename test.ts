@@ -117,15 +117,15 @@ for (var i = 0; i < 3; i++) {
     plots += '};\n'
 }
 
-import { findVariance } from './testmethod';
+import { findStandardDeviation } from './testmethod';
 
-let variacnes: number[] = []
+let standardDeviations: number[] = []
 
-variacnes.push(findVariance(formattedResults.fptp.map(res => res.wins)))
-variacnes.push(findVariance(formattedResults.stv.map(res => res.wins)))
-variacnes.push(findVariance(formattedResults.schulze.map(res => res.wins)))
+standardDeviations.push(findStandardDeviation(formattedResults.fptp.map(res => res.wins)))
+standardDeviations.push(findStandardDeviation(formattedResults.stv.map(res => res.wins)))
+standardDeviations.push(findStandardDeviation(formattedResults.schulze.map(res => res.wins)))
 
-console.log(variacnes)
+console.log(standardDeviations)
 
 //let input = [[0, 2, 1, 4, 3], [0, 2, 1, 4, 3], [0, 2, 1, 4, 3], [0, 2, 1, 4, 3], [0, 2, 1, 4, 3], [0, 3, 4, 2, 1], [0, 3, 4, 2, 1], [0, 3, 4, 2, 1], [0, 3, 4, 2, 1], [0, 3, 4, 2, 1], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [2, 0, 1, 4, 3], [2, 0, 1, 4, 3], [2, 0, 1, 4, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 1, 0, 3, 4], [2, 1, 0, 3, 4], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2]]
 /*let testGraph: {candidate: number, votes: number}[] = []
