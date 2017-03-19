@@ -165,7 +165,7 @@ while $\left\vert{winners}\right\vert < seats$\\
 end while
 \subsubsection{Implementation}
 The single transferable vote algorithm uses a tree structure to represent the state of the election. Every candidate is a top-level node with an attribute showing the number of current votes for the candidate. Each node has child nodes that show the next prefrences of the voters for that particular candidate, see figure \ref{Tree structure}. It is easy to manipulate branches via recursion. Merging and multiplying branches is used when transfering votes from one candidate node to another. A candidate node is a Typescript class. It can be found in the \texttt{stv/candidate.ts} file and has the following properties and functions:
-\lstinputlisting[language=JavaScript]{code/candidateNode.ts}
+\lstinputlisting[language=JavaScript, label=some-code, caption=Some Code]{code/candidateNode.txt}
 \begin{figure}[H]
 	\centering
 	\includegraphics[height=200px]{Tree}
