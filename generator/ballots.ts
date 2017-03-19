@@ -2,11 +2,11 @@ import { Ideology, IdeologyWithProbabilities } from './interfaces'
 
 
 // Generates the ballots, essentially the output of the program
-export function generateBallots(numberOfBallots: number, prob: number[], parties: number[]): number[][] {
+function generateBallots(numberOfBallots: number, prob: number[], candidates: number[]): number[][] {
     // Create temp array combining probability and possib
     let temp: number[][] = []
-    for (var i = 0; i < parties.length; i++) {
-        temp.push([prob[i], parties[i]])
+    for (var i = 0; i < candidates.length; i++) {
+        temp.push([prob[i], candidates[i]])
     }
 
     //Sorts the temp array
@@ -46,7 +46,7 @@ export function createAllBallots(ideologies: Ideology[], ideologyProbabilities: 
         const ideology = ideologies[i]
         const ideologyProbability = ideologyProbabilities[i]
 
-        const arrOfBallots = generateBallots(ideology.size*ballots, ideologyProbability.probabilities , ideologyProbability.parties)
+        const arrOfBallots = generateBallots(ideology.size*ballots, ideologyProbability.probabilities , ideologyProbability.candidates)
 
         result = result.concat(arrOfBallots)
     }
@@ -56,23 +56,23 @@ export function createAllBallots(ideologies: Ideology[], ideologyProbabilities: 
 
 
 function distributeVotes(temp: number[][]): number[] {
-    let parties = [ ...temp ]
-    let index = parties.length
+    let candidates = [ ...temp ]
+    let index = candidates.length
     let result: number[] = []
 
     while (index > 0) {
         const rand = Math.random()
         // Loops through the temp array
-        for (var i = 0; i < parties.length; i++) {
+        for (var i = 0; i < candidates.length; i++) {
             // Gets the value of the party size
-            const val = parties[i][0]
+            const val = candidates[i][0]
             // The first value that is greater than the random number 
             if (val > rand) {
                 // Checks if party has already been voted for
-                if (!parties[i][2]) {
+                if (!candidates[i][2]) {
                     // Makes sure that the party isn't voted for again
-                    parties[i] = [ ...parties[i], 1]
-                    result.push(parties[i][1])
+                    candidates[i] = [ ...candidates[i], 1]
+                    result.push(candidates[i][1])
                     index--
                 }
                 // Breaks the loop so that only the first value greater than the random number is added
