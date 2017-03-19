@@ -11,9 +11,9 @@ export default function calculateResult(input: number[][], seats: number): numbe
     // Gets the pairs of candidates and their count
     // Ex 120 votes prefer a > b
 
-    // d[i][j] gives the number of ballots prefering i > j
+    // d[i][j] gives the number of ballots prefering candidate i > j
     let d: PairMap = getPairs(input)
-    // o[i][j] stores the strongest path between i and j
+    // o[i][j] stores the strongest path between candidate i and j
     let p: PairMap = {}
     // Number of candidates
     let c = input[0].length

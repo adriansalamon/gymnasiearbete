@@ -81,11 +81,11 @@ export function transferSurplus(candNumber: number, tree: CandidateNode[], quota
 
 }
 
-// Distributes votes from a list onto the tree. Returns a new tree.
-function distribute(treeList: CandidateNode[], tree: CandidateNode[], winners: number[]): CandidateNode[] {
-    // Loops through each candidate in the list
-    for (let i = 0; i < treeList.length; i++) {
-        let cand = treeList[i];
+// Distributes a list of nodes onto the tree. Returns a new tree.
+function distribute(nodeList: CandidateNode[], tree: CandidateNode[], winners: number[]): CandidateNode[] {
+    // Loops through each candidate node in the list
+    for (let i = 0; i < nodeList.length; i++) {
+        let cand = nodeList[i];
         // Find if candidate is in the tree and/or is a winner
         let itExistsInTree = tree.some(obj => obj.cand === cand.cand)
         let isWinner = winners.includes(cand.cand)
@@ -97,7 +97,7 @@ function distribute(treeList: CandidateNode[], tree: CandidateNode[], winners: n
             // Find the index of candidate in tree
             let treeIndex = tree.findIndex(item => item.cand === cand.cand)
             // Add the trees/branches together
-            tree[treeIndex] = tree[treeIndex].add(treeList[i])         
+            tree[treeIndex] = tree[treeIndex].add(nodeList[i])         
         }
     }
     return tree
