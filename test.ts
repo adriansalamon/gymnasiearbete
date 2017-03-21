@@ -8,21 +8,20 @@ import schulze from './schulze'
 
 const ballots = 500
 
-const candidates = 8
-const seats = 1
-
+const candidates = 9
+const seats = 3
 const ideologies: Ideology[] = [{
-    size: 0.3,
-    candidatePower: 0.6,
-    ideologyPower: 0.8
+    size: 0.2,
+    candidatePower: 1.8,
+    ideologyPower: 0.6
 }, {
     size: 0.3,
-    candidatePower: 0.8,
-    ideologyPower: 0.7
+    candidatePower: 1.6,
+    ideologyPower: 0.6
 }, {
-    size: 0.4,
-    candidatePower: 0.5,
-    ideologyPower: 0.8,
+    size: 0.5,
+    candidatePower: 2,
+    ideologyPower: 0.6
 }]
 
 
@@ -128,7 +127,8 @@ standardDeviations.push(findStandardDeviation(formattedResults.schulze.map(res =
 console.log(standardDeviations)
 
 //let input = [[0, 2, 1, 4, 3], [0, 2, 1, 4, 3], [0, 2, 1, 4, 3], [0, 2, 1, 4, 3], [0, 2, 1, 4, 3], [0, 3, 4, 2, 1], [0, 3, 4, 2, 1], [0, 3, 4, 2, 1], [0, 3, 4, 2, 1], [0, 3, 4, 2, 1], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [2, 0, 1, 4, 3], [2, 0, 1, 4, 3], [2, 0, 1, 4, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 1, 0, 3, 4], [2, 1, 0, 3, 4], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2]]
-/*let testGraph: {candidate: number, votes: number}[] = []
+let testGraph: {candidate: number, votes: number}[] = []
+let input = generateBallots(ideologies, candidates, ballots)
 
 for (var i = 0; i < input.length; i++) {
     let firstVote: number = input[i][0]
@@ -159,7 +159,7 @@ for (var i = 0; i < testGraph.length; i++) {
 testplot += '}; \n'
 
 console.log(testplot)
-*/
+
 var fs = require('fs')
 fs.writeFile('plots.txt', plots)
 

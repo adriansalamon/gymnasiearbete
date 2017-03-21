@@ -5,7 +5,7 @@ export function findStandardDeviation(numbers: number[]): number {
 
     let d = sSquared - s
 
-    let standardDeviation = (d/(n-1))**0.5
+    let standardDeviation = (d/(n))**0.5
 
     return standardDeviation
 }
