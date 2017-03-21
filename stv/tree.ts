@@ -22,7 +22,7 @@ export function buildTree(ballots: number[][]): CandidateNode[] {
                 level.push(new CandidateNode(cand, 0))
             }
             // Find index of current candidate in tree
-            const candIndex = level.findIndex(item => item.cand == cand)
+            const candIndex = level.findIndex(item => item.cand === cand)
             // Increment the count for the node
             level[candIndex].count += 1
             // Move down one level
@@ -85,7 +85,7 @@ export function transferSurplus(candNumber: number, tree: CandidateNode[], quota
 function distribute(nodeList: CandidateNode[], tree: CandidateNode[], winners: number[]): CandidateNode[] {
     // Loops through each candidate node in the list
     for (let i = 0; i < nodeList.length; i++) {
-        let cand = nodeList[i];
+        let cand = nodeList[i]
         // Find if candidate is in the tree and/or is a winner
         let itExistsInTree = tree.some(obj => obj.cand === cand.cand)
         let isWinner = winners.includes(cand.cand)

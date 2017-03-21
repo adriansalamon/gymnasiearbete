@@ -15,8 +15,9 @@ export function createCandidates(numberOfCandidates: number, ideologies: Ideolog
 
             // Loops through all ideologies
             for (let ideologyIndex = 0; ideologyIndex < tempIdeologies.length; ideologyIndex++) {
-                if(numberOfCandidates <= 0)
+                if(numberOfCandidates <= 0) {
                     break
+                }
                 
                 // Current ideology in loop
                 const ideology = tempIdeologies[ideologyIndex]
@@ -50,13 +51,15 @@ export function assignProbabilityToIdeology(ideologies: Ideology[], candidates: 
     let result: IdeologyWithProbabilities[] = []
 
     // Loops through each ideology
-    for (var ideologyIndex = 0; ideologyIndex < ideologies.length; ideologyIndex++) {
+    for (let ideologyIndex = 0; ideologyIndex < ideologies.length; ideologyIndex++) {
         let ideology = ideologies[ideologyIndex]
         // Maps parties and sets the size according to ideology
         const withProbabilities = candidates.map(candidate => {
             if (candidate.ideology === ideologyIndex) {
                 // Increases probability of voting for party aligned with ideology
-                return candidate.size * 8 * (ideology.ideologyPower**2)
+                if (candidate.size) {
+                    return candidate.size * 8 * (ideology.ideologyPower**2)
+                }
             } else {
                 return candidate.size
             }
@@ -79,7 +82,7 @@ export function assignProbabilityToIdeology(ideologies: Ideology[], candidates: 
 // Assigns relative sizes to all parties based on their ideologies
 function assignCandidateSizes(candidates: Candidate[], ideologies: IdeologyWithCandidates[]): Candidate[] {
     // Loops through all ideologies
-    for (var ideologyIndex = 0; ideologyIndex < ideologies.length; ideologyIndex++) {
+    for (let ideologyIndex = 0; ideologyIndex < ideologies.length; ideologyIndex++) {
         const ideology = ideologies[ideologyIndex]
         // Calculates a distribution of sizes of parties within an ideology
         let ideologySizeList = calculateDistribution(ideology.numberOfCandidates, ideology.candidatePower)
@@ -88,7 +91,9 @@ function assignCandidateSizes(candidates: Candidate[], ideologies: IdeologyWithC
         candidates = candidates.map((candidate) => {
             if (candidate.ideology === ideologyIndex) {
                 // Shifts the size from the array
-                const size = ideologySizeList.shift() * ideology.size
+                let shift = ideologySizeList.shift()
+                const size: number = shift ? ideology.size : 0
+                
                 // Creates a new object and returns it to the array
                 const newCandidate = Object.assign({}, candidate, {size})
                 return newCandidate
@@ -111,14 +116,14 @@ function fy (y: number, k: number): number {
 
 // Normalizes an array of numbers so that the sum is 1
 function normalize(array: (number | undefined)[]): number[] {
-    const sum = array.reduce((acc, val) => acc + val)
-    const normalized = array.map(val => val/sum)
+    const sum = array.reduce((acc, val) => (acc && val) ? acc + val : 0)
+    const normalized = array.map(val => (val && sum) ? val/sum : 0)
     return normalized
 }
 
 // Calculates the distribution of votes as a negative exponential distribution
 function calculateDistribution (candidates: number, k:number): number[] {
-    // Adjusts the constant to vary more and set 0.5 as the default
+    // Adjusts the constant to lety more and set 0.5 as the default
     const adjustedK = (k**2)*0.5
     // Defines the range of the distribution where y > 0.01
     const xLimit = fy(0.01, adjustedK)

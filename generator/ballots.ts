@@ -5,7 +5,7 @@ import { Ideology, IdeologyWithProbabilities } from './interfaces'
 function generateBallots(numberOfBallots: number, prob: number[], candidates: number[]): number[][] {
     // Create temp array combining probability and possib
     let temp: number[][] = []
-    for (var i = 0; i < candidates.length; i++) {
+    for (let i = 0; i < candidates.length; i++) {
         temp.push([prob[i], candidates[i]])
     }
 
@@ -29,7 +29,7 @@ function generateBallots(numberOfBallots: number, prob: number[], candidates: nu
 
     let ballots: number[][] = []
 
-    for (var i = 0; i < numberOfBallots; i++) {
+    for (let i = 0; i < numberOfBallots; i++) {
         const votes = distributeVotes(temp)
         ballots.push(votes)
         //console.log(temp)
@@ -42,7 +42,7 @@ function generateBallots(numberOfBallots: number, prob: number[], candidates: nu
 export function createAllBallots(ideologies: Ideology[], ideologyProbabilities: IdeologyWithProbabilities[], ballots: number): number[][] {
     let result: number[][] = []
 
-    for (var i = 0; i < ideologies.length; i++) {
+    for (let i = 0; i < ideologies.length; i++) {
         const ideology = ideologies[i]
         const ideologyProbability = ideologyProbabilities[i]
 
@@ -63,7 +63,7 @@ function distributeVotes(temp: number[][]): number[] {
     while (index > 0) {
         const rand = Math.random()
         // Loops through the temp array
-        for (var i = 0; i < candidates.length; i++) {
+        for (let i = 0; i < candidates.length; i++) {
             // Gets the value of the party size
             const val = candidates[i][0]
             // The first value that is greater than the random number 

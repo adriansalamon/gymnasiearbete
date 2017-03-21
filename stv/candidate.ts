@@ -5,8 +5,8 @@ export default class CandidateNode {
     public children: CandidateNode[]
 
     constructor(cand: number, count: number) {
-        this.cand = cand;
-        this.count = count;
+        this.cand = cand
+        this.count = count
         this.children = []
     }
 
@@ -23,7 +23,7 @@ export default class CandidateNode {
         children = children.concat(otherChildren.filter(child => children.indexOf(child) < 0))
 
         // Loops through children and pushes them to new node
-        for (var i = 0; i < children.length; i++) {
+        for (let i = 0; i < children.length; i++) {
             newNode.children.push(addChildren(this.children, other.children, children[i]))
         }
 
@@ -49,13 +49,14 @@ function addChildren(aChildren: CandidateNode[], bChildren: CandidateNode[], chi
     // A has the child and B has the child
     const aHas = aChildren.some(obj => obj.cand === child)
     const bHas = bChildren.some(obj => obj.cand === child)
-    let aIndex, bIndex;
+    let aIndex, bIndex
     // Finds index of child if they exist in array
-    if (aHas)
-        aIndex = aChildren.findIndex(item => item.cand == child)
-    if (bHas)
-        bIndex = bChildren.findIndex(item => item.cand == child)
-
+    if (aHas) {
+        aIndex = aChildren.findIndex(item => item.cand === child)
+    }
+    if (bHas) {
+        bIndex = bChildren.findIndex(item => item.cand === child)
+    }
     /*
     If they both have the child, add the trees together
     Else return the node that exclusively has the child

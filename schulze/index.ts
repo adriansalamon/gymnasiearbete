@@ -19,18 +19,18 @@ export default function calculateResult(input: number[][], seats: number): numbe
     let c = input[0].length
 
     // Fills p with a bunch of zeroes
-    for (var i = 0; i < c; i++) {
+    for (let i = 0; i < c; i++) {
         p[i] = {}
-        for (var j = 0; j < c; j++) {
+        for (let j = 0; j < c; j++) {
             if (i !== j) {
                 p[i][j] = 0
             }
         }
     }
 
-    // Computing strongest path strength. Variant of the Floyd-Warshall algorithm
-    for (var i = 0; i < c; i++) {
-        for (var j = 0; j < c; j++) {
+    // Computing strongest path strength. letiant of the Floyd-Warshall algorithm
+    for (let i = 0; i < c; i++) {
+        for (let j = 0; j < c; j++) {
             if (i !== j) {
                 if (d[i][j] > d[j][i]) {
                     p[i][j] = d[i][j]
@@ -41,10 +41,10 @@ export default function calculateResult(input: number[][], seats: number): numbe
         }
     }
 
-    for (var i = 0; i < c; i++) {
-        for (var j = 0; j < c; j++) {
+    for (let i = 0; i < c; i++) {
+        for (let j = 0; j < c; j++) {
             if (i !== j) {
-                for (var k = 0; k < c; k++) {
+                for (let k = 0; k < c; k++) {
                     if (i !== k && j !== k) {
                         p[j][k] = Math.max(p[j][k], Math.min(p[j][i], p[i][k]))
                     }
@@ -64,17 +64,17 @@ function getPairs(ballots: number[][]): PairMap {
     let p = {}
 
     // Loops throug all ballots
-    for (var k = 0; k < ballots.length; k++) {
-        var ballot = ballots[k];
+    for (let k = 0; k < ballots.length; k++) {
+        let ballot = ballots[k]
         // Temp array that stores which candidates are prefered over current candidate in the loop
         let preferred: number[] = []
         //Loops through each ballot
-        for (var i = 0; i < ballot.length; i++) {
-            var vote = ballot[i];
+        for (let i = 0; i < ballot.length; i++) {
+            let vote = ballot[i]
             // Loops through the preferred array
-            for (var j = 0; j < preferred.length; j++) {
+            for (let j = 0; j < preferred.length; j++) {
                 // Current preferred vote
-                let preferredVote = preferred[j];
+                let preferredVote = preferred[j]
                 // Gets the index of where preferredvote > vote are stored
                 p[preferredVote] = p[preferredVote] || {}
 
@@ -94,8 +94,8 @@ function getResult(p: PairMap, c: number, seats: number): number[] {
     let wins: number[][] = []
 
     // Loops through the strongest paths
-    for (var i = 0; i < c; i++) {
-        for (var j = 0; j < c; j++) {
+    for (let i = 0; i < c; i++) {
+        for (let j = 0; j < c; j++) {
             if (i !== j) {
                 // If path is stronger between i and j than j and i, i wins over j
                 if (p[i][j] > p[j][i]) {

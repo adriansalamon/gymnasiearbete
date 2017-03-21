@@ -20,7 +20,7 @@ export function runElection(input: number[][], seats: number): Result {
         // Check for winners
         let newWinners: number[] = []
         // Loops through tree
-        for (var i = 0; i < tree.length; i++) {
+        for (let i = 0; i < tree.length; i++) {
             const cand = tree[i]
             // If the count of candidate is greater than quota and the candidate is not a winner
             if(cand.count >= quota && !winners.includes(cand.cand)){
@@ -39,7 +39,7 @@ export function runElection(input: number[][], seats: number): Result {
         // Loop while there is a surplus of votes for a candidate
         while(isSurplus(tree, quota)) {
             // Loop through tree 
-            for (var i = 0; i < tree.length; i++) {
+            for (let i = 0; i < tree.length; i++) {
                 const cand = tree[i]
                 if(cand.count >= quota) {
                     // Transfer the surplus
@@ -57,8 +57,8 @@ export function runElection(input: number[][], seats: number): Result {
         // Checks if there are an equal number of candidates left as seats to be elected. If so, elect all
         let allSeatsFilled = false
         if (tree.length === seats) {
-            for (var i = 0; i < tree.length; i++) {
-                var cand = tree[i];
+            for (let i = 0; i < tree.length; i++) {
+                let cand = tree[i]
                 if (!winners.includes(cand.cand)) {
                     allSeatsFilled = true
                     winners = [...winners, cand.cand]
@@ -72,9 +72,10 @@ export function runElection(input: number[][], seats: number): Result {
         // Eliminate lowest ranked
         // Finds the lowest ranked candidate. This is a bad algorithm I will need to fix later.
         let lowestRanked = 0
-        for (var i = 0; i < tree.length; i++) {
-            if (tree[i].count < tree[lowestRanked].count)
+        for (let i = 0; i < tree.length; i++) {
+            if (tree[i].count < tree[lowestRanked].count) {
                 lowestRanked = i
+            }
         }
         log.push(`Eliminated candidate ${tree[lowestRanked].cand}`)
         // Eliminates candidate
