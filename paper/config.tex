@@ -1,18 +1,16 @@
-\documentclass[12pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
+\usepackage[table,xcdraw]{xcolor}
 \usepackage{hyperref}
 \usepackage{float}
 \usepackage{amsmath}
 \usepackage{mathtools}
 \usepackage{tikz}
 \usepackage{pgfplots}
-\usepackage{xcolor}
 
-\pgfplotsset{compat=1.14}
+\pgfplotsset{compat=1.14} % Disable-lint
 
-
-\hypersetup{
+\hypersetup{%
 	colorlinks,
 	citecolor=black,
 	filecolor=black,
@@ -21,31 +19,34 @@
 }
 
 \usepackage[backend=biber,style=authoryear]{biblatex}
+\usepackage[newfloat]{minted}
+\usemintedstyle{vs}
 \usepackage{csquotes}
+\usepackage{caption}
+\usepackage{booktabs}
 
 
 \graphicspath{ {images/} }
 
-\usepackage{minted}
-
-\usemintedstyle{vs}
-
 \newcommand\tab[1][1cm]{\hspace*{#1}}
-\renewcommand{\listingscaption}{Code example}
+\SetupFloatingEnvironment{listing}{name=Code example}
 \definecolor{bg}{rgb}{0.95,0.95,0.95}
+\newenvironment{code}{\captionsetup{type=listing}}{}
 
-\newcommand{\codeblock}[3]{%
-%\begin{listing}[H]
-%  \inputminted[
-%    mathescape,
-%    linenos,
-%    numbersep=5pt,
-%    tabsize=4,
-%    label=Helloworld,
-%    bgcolor=bg,
-%    breaklines
-%  ]{TypeScript}{#1}
-%  \caption{#3}
-%  \label{#2}
-%\end{listing}
+\newcommand\codeblock[3]{%
+\begin{code}
+	\caption{#3}
+	\inputminted[%
+	    mathescape,
+	    linenos,
+	    numbersep=5pt,
+	    tabsize=4,
+	    label=Helloworld,
+	    bgcolor=bg,
+	    breaklines%
+	]{TypeScript}{#1}
+	\label{#2}
+\end{code}
 }
+
+\newcommand\Code[1]{\texttt{#1}}
