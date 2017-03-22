@@ -70,7 +70,7 @@ export function assignProbabilityToIdeology(ideologies: Ideology[], candidates: 
         // IDK why I have it here. Not needed but who knows. Creates array of 1,2,3...
         const candidateList = Array(candidates.length).fill(0).map((val, index) => index)
         // Assigns values to ideology
-        result = [...result, {probabilities: normalized, candidates: candidateList}]
+        result = [...result, {size: ideology.size, probabilities: normalized, candidates: candidateList}]
         //ideologies[ideologyIndex] = Object.assign({}, ideology, {probabilities: normalized, parties: partyList})
 
     }
@@ -92,7 +92,7 @@ function assignCandidateSizes(candidates: Candidate[], ideologies: IdeologyWithC
             if (candidate.ideology === ideologyIndex) {
                 // Shifts the size from the array
                 let shift = ideologySizeList.shift()
-                const size: number = shift ? ideology.size : 0
+                const size: number = shift ? shift*ideology.size : 0
                 
                 // Creates a new object and returns it to the array
                 const newCandidate = Object.assign({}, candidate, {size})

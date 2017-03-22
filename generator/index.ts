@@ -6,12 +6,16 @@ import { Ideology, IdeologyWithProbabilities } from './interfaces'
 import { createCandidates, assignProbabilityToIdeology } from './candidates'
 import { createAllBallots } from './ballots'
 
-export default function generateBallots(ideologies: Ideology[], numberOfcandidates: number, numberOfBallots: number): number[][] {
+
+export function generateBallots(ideologies: IdeologyWithProbabilities[], numberOfBallots: number): number[][] {
+
+    const result = createAllBallots(ideologies, numberOfBallots)
+    
+    return result
+}
+
+export function createIdeologyProbabilities(ideologies: Ideology[], numberOfcandidates: number): IdeologyWithProbabilities[] {
     const candidates = createCandidates(numberOfcandidates, ideologies)
 
-    const ideologyProbabilities: IdeologyWithProbabilities[] = assignProbabilityToIdeology(ideologies, candidates)
-
-    const result = createAllBallots(ideologies, ideologyProbabilities, numberOfBallots)
-
-    return result
+    return assignProbabilityToIdeology(ideologies, candidates)
 }

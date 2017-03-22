@@ -39,14 +39,13 @@ function generateBallots(numberOfBallots: number, prob: number[], candidates: nu
     return ballots
 }
 
-export function createAllBallots(ideologies: Ideology[], ideologyProbabilities: IdeologyWithProbabilities[], ballots: number): number[][] {
+export function createAllBallots(ideologyProbabilities: IdeologyWithProbabilities[], ballots: number): number[][] {
     let result: number[][] = []
 
-    for (let i = 0; i < ideologies.length; i++) {
-        const ideology = ideologies[i]
-        const ideologyProbability = ideologyProbabilities[i]
+    for (let i = 0; i < ideologyProbabilities.length; i++) {
+        const ideology = ideologyProbabilities[i]
 
-        const arrOfBallots = generateBallots(ideology.size*ballots, ideologyProbability.probabilities , ideologyProbability.candidates)
+        const arrOfBallots = generateBallots(ideology.size*ballots, ideology.probabilities , ideology.candidates)
 
         result = result.concat(arrOfBallots)
     }

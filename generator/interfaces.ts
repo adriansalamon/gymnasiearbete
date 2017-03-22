@@ -13,6 +13,7 @@ export interface IdeologyWithCandidates {
 }
 
 export interface IdeologyWithProbabilities {
+    size: number,
     probabilities: number[],
     candidates: number[]
 }

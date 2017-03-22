@@ -1,5 +1,5 @@
-import { Ideology } from './generator/interfaces'
-import generateBallots from './generator'
+import { Ideology, IdeologyWithProbabilities } from './generator/interfaces'
+import { createIdeologyProbabilities, generateBallots} from './generator'
 
 import fptp from './fptp'
 import { runElection as stv } from './stv'
@@ -28,13 +28,15 @@ const ideologies: Ideology[] = [{
 
 let results: Array<{ stv: number[], fptp: number[], schulze: number[], }> = []
 
+let ideologyData: IdeologyWithProbabilities[] = createIdeologyProbabilities(ideologies, candidates)
+let start = Date.now()
 for (let j = 0; j < 1000; j++) {
     console.log(j)
-    let input = generateBallots(ideologies, candidates, ballots)
-
+    let input = generateBallots(ideologyData, ballots)
     results.push({ stv: stv(input, seats).winners, fptp: fptp(input, seats), schulze: schulze(input, seats) })
 }
 
+console.log(`Done loop. Took ${(Date.now()-start)/1000} s`)
 interface FormattedResults {
     stv: Array<{
         candidate: number,
@@ -127,7 +129,7 @@ console.log(standardDeviations)
 
 //let input = [[0, 2, 1, 4, 3], [0, 2, 1, 4, 3], [0, 2, 1, 4, 3], [0, 2, 1, 4, 3], [0, 2, 1, 4, 3], [0, 3, 4, 2, 1], [0, 3, 4, 2, 1], [0, 3, 4, 2, 1], [0, 3, 4, 2, 1], [0, 3, 4, 2, 1], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [2, 0, 1, 4, 3], [2, 0, 1, 4, 3], [2, 0, 1, 4, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 1, 0, 3, 4], [2, 1, 0, 3, 4], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2]]
 let testGraph: {candidate: number, votes: number}[] = []
-let input = generateBallots(ideologies, candidates, ballots)
+let input = generateBallots(ideologyData, ballots)
 
 for (let i = 0; i < input.length; i++) {
     let firstVote: number = input[i][0]
