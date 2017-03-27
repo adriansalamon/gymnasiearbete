@@ -417,37 +417,6 @@ Scenario 3 featured 9 candidates of which 3 were to be elected. The distribution
 	\label{fig:scenario 3 result}
 \end{figure}
 
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}
-		\begin{axis}[
-			ybar,
-			width = 0.9\textwidth,
-			height = 0.5\textwidth,
-			legend style={at={(0.5,-0.25)},
-			anchor=north,legend columns=-1},
-      x tick style = transparent,
-			ylabel = {Elections won},
-			xlabel = {Candidate},
-			ymajorgrids = true,
-			every axis plot/.append style={draw=none,fill,no markers},
-      ymin = 0,
-			symbolic x coords={0,1,2,3,4,5,6,7,8},
-			bar width=0.25cm
-      ]
-			\addplot coordinates
-			{(0, 0)(1, 0)(2, 737)(3, 0)(4, 0)(5, 738)(6, 0)(7, 743)(8, 782)};
-			\addplot coordinates
-			{(0, 0)(1, 0)(2, 756)(3, 0)(4, 0)(5, 737)(6, 0)(7, 736)(8, 771)};
-			\addplot coordinates
-			{(0, 0)(1, 0)(2, 766)(3, 0)(4, 0)(5, 752)(6, 0)(7, 746)(8, 736)};
-			\legend{FPTP, STV, Schulze}
-			\end{axis}
-	\end{tikzpicture}
-	\caption{Results in scenario 4}
-	\label{fig:scenario 4 result}
-\end{figure}
-
 \begin{table}[H]
 	\centering
 	\caption{Key metrics for result in scenario 3}
@@ -460,10 +429,19 @@ Scenario 3 featured 9 candidates of which 3 were to be elected. The distribution
 		Schulze & 471 & 33\% & 0, 1 \& 2  \\ \bottomrule
 	\end{tabular}
 \end{table}
-
-%[ 469.99669029568, 471.40452079103, 471.16899539573 ]
-\section{Conclusion}
 Proportionalities: 1:67,7,9 2:42,14,67, 3:33,33,33
+
+\section{Conclusion}
+The results obtained in the three different scenarios provide some insight into the varying properties of the different voting systems. Each of the scenarios showed different behaviors for the different methods. For instance, the methods provided practically the same result in scenario 3 but wildly varying results in scenario 2. While the testing method used in this paper may not have been the most robust way of comparing the voting methods, several conclusions can be drawn from the data. I outline them in 4 points below.
+\begin{itemize}
+	\item Schulze did not seem like a proportional voting method in multi-seat elections.
+	\item In single-seat elections, Schulze and STV (and IRV in extension) seemed to provide similar results.
+	\item FPTP did not seem like a very proportional method in close elections.
+	\item STV seems to be the most proportional method out of the 3 tested, but is not without its flaws.
+\end{itemize}
+Summary:
+There is no perfect voting system. Generally, if you want proportional representation (which in a democracy you want), STV will likely be the best method to use out of the methods covered in this paper.
+Modeling of data needs more work, as well as including other methods (such as ...). More research is needed.
 
 \pagebreak
 
