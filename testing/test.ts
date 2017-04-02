@@ -1,9 +1,39 @@
-import { Ideology, IdeologyWithProbabilities } from './generator/interfaces'
-import { createIdeologyProbabilities, generateBallots} from './generator'
+// This file was used in doing the testing needed to obtain results for the paper
 
-import fptp from './fptp'
-import { runElection as stv } from './stv'
-import schulze from './schulze'
+
+import { Ideology, IdeologyWithProbabilities } from '../generator/interfaces'
+import { createIdeologyProbabilities, generateBallots} from '../generator'
+import getStandardDeviation from './standardDeviation'
+
+import fptp from '../fptp'
+import stv  from '../stv'
+import schulze from '../schulze'
+
+interface Result {
+    stv: number[], 
+    fptp: number[], 
+    schulze: number[]
+}
+
+interface FormattedResults {
+    stv: {
+        candidate: number,
+        wins: number
+    }[],
+    fptp: {
+        candidate: number,
+        wins: number
+    }[],
+    schulze:{
+        candidate: number,
+        wins: number
+    }[]
+}
+
+interface Candidate {
+    candidate: number,
+    wins: number
+}
 
 
 const ballots = 500
@@ -26,31 +56,20 @@ const ideologies: Ideology[] = [{
 
 //let input = [[0, 2, 1, 4, 3], [0, 2, 1, 4, 3], [0, 2, 1, 4, 3], [0, 2, 1, 4, 3], [0, 2, 1, 4, 3], [0, 3, 4, 2, 1], [0, 3, 4, 2, 1], [0, 3, 4, 2, 1], [0, 3, 4, 2, 1], [0, 3, 4, 2, 1], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [2, 0, 1, 4, 3], [2, 0, 1, 4, 3], [2, 0, 1, 4, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 1, 0, 3, 4], [2, 1, 0, 3, 4], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2]]
 
-let results: Array<{ stv: number[], fptp: number[], schulze: number[], }> = []
+let results: Result[] = []
 
 let ideologyData: IdeologyWithProbabilities[] = createIdeologyProbabilities(ideologies, candidates)
+
 let start = Date.now()
-for (let j = 0; j < 1000; j++) {
-    console.log(j)
+for (let t = 0; t < 1000; t++) {
+    console.log(t)
     let input = generateBallots(ideologyData, ballots)
     results.push({ stv: stv(input, seats).winners, fptp: fptp(input, seats), schulze: schulze(input, seats) })
 }
 
 console.log(`Done loop. Took ${(Date.now()-start)/1000} s`)
-interface FormattedResults {
-    stv: Array<{
-        candidate: number,
-        wins: number
-    }>,
-    fptp: Array<{
-        candidate: number,
-        wins: number
-    }>,
-    schulze: Array<{
-        candidate: number,
-        wins: number
-    }>
-}
+
+
 
 let formattedResults: FormattedResults = { stv: [], fptp: [], schulze: [] }
 
@@ -62,7 +81,7 @@ for (let i = 0; i < results.length; i++) {
 
 }
 
-function addVotes(candidates: number, results: number[], formattedResults: Array<{ candidate: number, wins: number }>): Array<{ candidate: number, wins: number }> {
+function addVotes(candidates: number, results: number[], formattedResults: Candidate[]): Candidate[] {
     for (let i = 0; i < candidates; i++) {
         let winnerIndex = results.findIndex(num => num === i)
         let resultsIndex = formattedResults.findIndex(obj => obj.candidate === i)
@@ -77,8 +96,6 @@ function addVotes(candidates: number, results: number[], formattedResults: Array
                 formattedResults.push({ candidate: i, wins: 0 })
             }
         }
-
-
     }
     /*
     for (let i = 0; i < results.length; i++) {
@@ -94,11 +111,6 @@ function addVotes(candidates: number, results: number[], formattedResults: Array
 }
 
 console.log(formattedResults)
-/*
-let input = createInput(ideologies, parties, ballots)
-results.push({stv: stv(input, seats).winners, fptp: fptp(input, seats), schulze: schulze(input, seats)})
-*/
-
 
 let plots: string = ''
 for (let i = 0; i < 3; i++) {
@@ -117,17 +129,16 @@ for (let i = 0; i < 3; i++) {
     plots += '};\n'
 }
 
-import { findStandardDeviation } from './testmethod'
-
 let standardDeviations: number[] = []
 
-standardDeviations.push(findStandardDeviation(formattedResults.fptp.map(res => res.wins)))
-standardDeviations.push(findStandardDeviation(formattedResults.stv.map(res => res.wins)))
-standardDeviations.push(findStandardDeviation(formattedResults.schulze.map(res => res.wins)))
+standardDeviations.push(getStandardDeviation(formattedResults.fptp.map(res => res.wins)))
+standardDeviations.push(getStandardDeviation(formattedResults.stv.map(res => res.wins)))
+standardDeviations.push(getStandardDeviation(formattedResults.schulze.map(res => res.wins)))
 
 console.log(standardDeviations)
 
 //let input = [[0, 2, 1, 4, 3], [0, 2, 1, 4, 3], [0, 2, 1, 4, 3], [0, 2, 1, 4, 3], [0, 2, 1, 4, 3], [0, 3, 4, 2, 1], [0, 3, 4, 2, 1], [0, 3, 4, 2, 1], [0, 3, 4, 2, 1], [0, 3, 4, 2, 1], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [1, 4, 3, 0, 2], [2, 0, 1, 4, 3], [2, 0, 1, 4, 3], [2, 0, 1, 4, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 0, 4, 1, 3], [2, 1, 0, 3, 4], [2, 1, 0, 3, 4], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [3, 2, 4, 1, 0], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2], [4, 1, 0, 3, 2]]
+
 let testGraph: {candidate: number, votes: number}[] = []
 let input = generateBallots(ideologyData, ballots)
 

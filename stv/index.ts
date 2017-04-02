@@ -1,2 +1,3 @@
-export { runElection } from './election'
+import stv from './election'
+export default stv
 

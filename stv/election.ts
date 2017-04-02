@@ -6,7 +6,7 @@ interface Result {
 }
 
 // Calculates election result in an STV election
-export function runElection(input: number[][], seats: number): Result {
+export default function runElection(input: number[][], seats: number): Result {
     let winners: number[] = []
     let log: string[] = []
     // Droop quota

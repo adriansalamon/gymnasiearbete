@@ -1,7 +1,7 @@
 \documentclass[12pt]{article}
 \input{config.tex}
 
-\addbibresource{sample.bib}
+\addbibresource{references.bib}
 
 \begin{document}
 
@@ -207,7 +207,7 @@ The main process of the program is found in the \Code{stv/election.ts} file and 
 
 \subsection{Schulze}
 \subsubsection{Description}
-The Schulze Method is a method used mainly to determine results in a single-winner election but can also be used to provide rankings and elect multiple candidates in a single election. Ballots are identical to those of the single transferable vote, see figure \ref{fig:stv ballot} on page \pageref{fig:stv ballot}. The method is compliant with the Condorcet Criterion, which means that if there is a candidate who the majority prefers in a pairwise comparison with every other candidate, that candidate wins. As mentioned, this method relies on comparing the preferences of every candidate to one another as shown in table \ref{tab:pairwise comparison matrix}. If there is a Condorcet winner the process is simple: declare the Condorcet winner a winner and run another iteration without that candidate. Repeat this process until all seats are filled. However, there can be Condorcet ties, where there is no Condorcet winner. There are multiple ways of resolving the tie, one of them being the Schulze Method.
+The Schulze Method is a method used mainly to determine results in a single-winner election but can also be used to provide rankings and elect multiple candidates in a single election \autocite{Schulze2011}. Ballots are identical to those of the single transferable vote, see figure \ref{fig:stv ballot} on page \pageref{fig:stv ballot}. The method is compliant with the Condorcet Criterion, which means that if there is a candidate who the majority prefers in a pairwise comparison with every other candidate, that candidate wins. As mentioned, this method relies on comparing the preferences of every candidate to one another as shown in table \ref{tab:pairwise comparison matrix}. If there is a Condorcet winner the process is simple: declare the Condorcet winner a winner and run another iteration without that candidate. Repeat this process until all seats are filled. However, there can be Condorcet ties, where there is no Condorcet winner. There are multiple ways of resolving the tie, one of them being the Schulze Method. \ref{}
 
 The Schulze Method resolves ties by investigating possible paths between candidates. For example, if out of a total of 50 ballots 30 ballots prefer $B>A$, 28 ballots prefer $A>C$ and 27 ballots prefer $C>B$, a path from $A$ to $B$ can be created by going $A \rightarrow C \rightarrow B$. The path is said to have the $strength$ of the weakest link in the path. In this example, the path strength between A and B is 27 due to the link between $C$ and $B$ having a strength of 27. There may be several paths between two candidates and the goal of the process is to find the strongest path between any candidate $A$ and $B$, written as $p[A,B]$. By finding the strongest path between all nodes a result can be obtained where $p[X,Y] \geq p[Y,X]$ which means that candidate $X$ wins. The Schulze Method also provides a linear ranking between all candidates, for example that $E > B > A > C > D$. By selecting the $N$ top candidates you can use the method for a multi-seat election. As the process can become very complex as the number of candidates grow, a computer is needed to resolve large elections.
 
@@ -398,19 +398,28 @@ Scenario 3 featured 9 candidates of which 3 were to be elected. The distribution
 		Schulze & 471 & 33\% & 0, 1 \& 2  \\ \bottomrule
 	\end{tabular}
 \end{table}
-Proportionalities: 1:67,7,9 2:42,14,67, 3:33,33,33
-
 \section{Conclusion}
 The results obtained in the three different scenarios provide some insight into the varying properties of the different voting systems. Each of the scenarios showed different behaviors for the different methods. For instance, the methods provided practically the same result in scenario 3 but wildly varying results in scenario 2. While the testing method used in this paper may not have been the most robust way of comparing the voting methods, several conclusions can be drawn from the data. I outline them in 4 points below.
 \begin{enumerate}
-	\item Schulze did not seem like a proportional voting method in multi-seat elections. \blindtext
-	\item In single-seat elections, Schulze and STV (and IRV in extension) seemed to provide similar results.
-	\item FPTP did not seem like a very proportional method in close elections.
-	\item STV seems to be the most proportional method out of the 3 tested, but is not without its flaws.
+	\item Schulze did not seem like a proportional voting method in multi-seat elections. ...
+	\item In single-seat elections, Schulze and STV (and IRV in extension) seemed to provide similar results. ...
+	\item FPTP did not seem like a very proportional method in close elections. ...
+	\item STV seems to be the most proportional method out of the 3 tested, but is not without its flaws. ...
 \end{enumerate}
 Summary:
 There is no perfect voting system. Generally, if you want proportional representation (which in a democracy you want), STV will likely be the best method to use out of the methods covered in this paper.
-Modeling of data needs more work, as well as including other methods (such as ...). More research is needed. (\cite{stv-ers})
+Modeling of data needs more work, as well as including other methods (such as ...). More research is needed.
+
+Todo:
+\begin{itemize}
+	\item Write theory
+	\item Add references where needed
+	\item Explain metrics used to evaluate results
+	\item Cut down on explanation of fptp
+	\item Write abstract
+	\item Finish summary
+\end{itemize}
+
 
 \pagebreak
 
