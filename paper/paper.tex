@@ -137,37 +137,6 @@ The second scenario elects 3 candidates out of 9 total. It features a steep spre
 	\caption{Example distribution of first-preference votes in scenario 3}
 	\label{fig:example of scenario 3}
 \end{figure}
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}
-		\begin{axis}[
-			ybar stacked,
-			width = 0.9\textwidth,
-			height = 0.5\textwidth,
-			legend style={at={(0.5,-0.25)},
-			anchor=north,legend columns=-1},
-      x tick style = transparent,
-			ylabel = {First prefrence votes},
-			xlabel = {Candidate},
-			ymajorgrids = true,
-      ymin = 0,
-			yticklabel={\pgfmathprintnumber\tick\%}
-      ]
-			\addplot coordinates
-			{(0, 27)(1, 0)(2, 0)(3, 17)(4, 0)(5, 0)(6, 0)(7, 0)(8, 0)};
-			\addplot coordinates
-			{(0, 0)(1, 27)(2, 0)(3, 0)(4, 41)(5, 0)(6, 56)(7, 0)(8, 0)};
-			\addplot coordinates
-			{(0, 0)(1, 0)(2, 89)(3, 0)(4, 0)(5, 79)(6, 0)(7, 79)(8, 85)};
-			\legend{Ideology 1, Ideology 2, Ideology 3}
-		\end{axis}
-	\end{tikzpicture}
-	\caption{Example distribution of first-preference votes in scenario 4}
-	\label{fig:example of scenario 4}
-\end{figure}
-
-
-
 \pagebreak
 \section{Specification of voting methods}
 \subsection{First-past-the-post}
@@ -265,7 +234,7 @@ The Schulze method is used by multiple organizations around the world. It has be
 let $d[i,j]$ be the number of ballots that prefer candidate $i$ to candidate $j$\\
 let $p[i,j]$ be the strength of the strongest path from candidate $i$ to candidate $j$\\
 for $i$ from 1 to $C$\\
-\tab for $j$ form 1 to $C$\\
+\tab for $j$ from 1 to $C$\\
 \tab\tab if ($i \ne j$)\\
 \tab\tab\tab if ($d[i,j] > d[j,i]$)\\
 \tab\tab\tab\tab $p[i,j] \coloneqq d[i,j]$\\
@@ -276,7 +245,7 @@ for $i$ from 1 to $C$\\
 \tab end for \\
 end for\\
 for $i$ from 1 to $C$\\
-\tab for $j$ form 1 to $C$\\
+\tab for $j$ from 1 to $C$\\
 \tab\tab if ($i \ne j$)\\
 \tab\tab\tab for $k$ from 1 to $C$\\
 \tab\tab\tab\tab if ($i \ne k \text{ and } j \ne k$)\\
@@ -433,21 +402,18 @@ Proportionalities: 1:67,7,9 2:42,14,67, 3:33,33,33
 
 \section{Conclusion}
 The results obtained in the three different scenarios provide some insight into the varying properties of the different voting systems. Each of the scenarios showed different behaviors for the different methods. For instance, the methods provided practically the same result in scenario 3 but wildly varying results in scenario 2. While the testing method used in this paper may not have been the most robust way of comparing the voting methods, several conclusions can be drawn from the data. I outline them in 4 points below.
-\begin{itemize}
-	\item Schulze did not seem like a proportional voting method in multi-seat elections.
+\begin{enumerate}
+	\item Schulze did not seem like a proportional voting method in multi-seat elections. \blindtext
 	\item In single-seat elections, Schulze and STV (and IRV in extension) seemed to provide similar results.
 	\item FPTP did not seem like a very proportional method in close elections.
 	\item STV seems to be the most proportional method out of the 3 tested, but is not without its flaws.
-\end{itemize}
+\end{enumerate}
 Summary:
 There is no perfect voting system. Generally, if you want proportional representation (which in a democracy you want), STV will likely be the best method to use out of the methods covered in this paper.
-Modeling of data needs more work, as well as including other methods (such as ...). More research is needed.
+Modeling of data needs more work, as well as including other methods (such as ...). More research is needed. (\cite{stv-ers})
 
 \pagebreak
 
 \printbibliography
-
-\section{Appendix}
-First-past-the-post program
 
 \end{document}
