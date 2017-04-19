@@ -31,7 +31,7 @@ export default class CandidateNode {
     
     }
 
-    // Multiplies votes for the candidate and its children. Returns a new node. Used when transfering votes.
+    // Multiplies votes for the candidate and its children. Returns a new node. Used when transferring votes.
     multiply(factor: number): CandidateNode {
         // New node to return
         let newNode = new CandidateNode(this.cand, this.count * factor)

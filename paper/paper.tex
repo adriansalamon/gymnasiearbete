@@ -29,7 +29,7 @@ The purpose of this essay is to evaluate differences and similarities in terms o
 Theory will be here some day
 \pagebreak
 \section{Methodology}
-All voting methods have been implemented in Typescript – mostly due to the author having previous experience with JavaScript. Typescript is a superset of JavaScript with multiple extra features. Most importantly Typescript has optional static type checking. Sample code in typescript can be seen in code example \ref{lst:typescript example}.
+All voting methods have been implemented in Typescript – mostly due to the author having previous experience with JavaScript. Typescript is a superset of JavaScript with multiple extra features. Most importantly Typescript has optional static type checking. Sample code in typescript can be seen in code example~\ref{lst:typescript example}.
 \codeblock{code/typescriptexample.ts}{lst:typescript example}{Basic Typescript syntax}
 \subsection{Modeling test data}
 In order to test the methods and their implementations, test data is needed. There are cases where extensive election data is published, such as in Maltese elections, but full ballot data, which is needed for the implementations has not been found. Instead, the implementations will be tested with data generated from a simple computer algorithm. The algorithm used in this paper is highly primitive, as modeling preferences within a population is far beyond this paper. The full ballot generation program can be found in the \Code{/generator/} folder. The goal of the program is to produce ballots that rank every candidate in order of preference (see figure~\ref{fig:stv ballot} on page~\pageref{fig:stv ballot}). The program represents each voter in a population as belonging to a certain ideology. Each ideology has has a list of weighted preferences indicating how a voter for this ideology is likely to vote. The weighed preferences are generated via an abstraction. A single configuration object is used to create all ideologies.
@@ -57,7 +57,7 @@ The scenario is built around electing one candidate out of eight. The spread of 
 			legend style={at={(0.5,-0.25)},
 			anchor=north,legend columns=-1},
       x tick style = transparent,
-			ylabel = {First prefrence votes},
+			ylabel = {First preference votes},
 			xlabel = {Candidate},
 			ymajorgrids = true,
       ymin = 0,
@@ -88,7 +88,7 @@ The second scenario elects 3 candidates out of 9 total. It features a normal spr
 			legend style={at={(0.5,-0.25)},
 			anchor=north,legend columns=-1},
       x tick style = transparent,
-			ylabel = {First prefrence votes},
+			ylabel = {First preference votes},
 			xlabel = {Candidate},
 			ymajorgrids = true,
       ymin = 0,
@@ -119,7 +119,7 @@ The second scenario elects 3 candidates out of 9 total. It features a steep spre
 			legend style={at={(0.5,-0.25)},
 			anchor=north,legend columns=-1},
       x tick style = transparent,
-			ylabel = {First prefrence votes},
+			ylabel = {First preference votes},
 			xlabel = {Candidate},
 			ymajorgrids = true,
       ymin = 0,
@@ -203,15 +203,15 @@ With the \Code{add()} and \Code{multiply()} functions it is possible to recursiv
 \codeblock{code/stv/distribute.ts}{lst:stv distribute function}{The distribute function}
 In order to eliminate and transfer surplus votes from any candidate node $A$, the children of $A$ are passed into the distribute function. In the case of transferring surplus votes, the votes for each child node is first multiplied by $\frac{\text{surplus votes}}{\text{total votes}}$ as outlined in the pseudocode in section~\ref{alg:stv psuedocode}. The full source code for functions that manipulate the tree structure can be found in \Code{/stv/tree.ts}.
 
-The main process of the program is found in the \Code{stv/election.ts} file and runs the process defined in the pseudocode in section \ref{alg:stv psuedocode} on page \pageref{alg:stv psuedocode}.
+The main process of the program is found in the \Code{stv/election.ts} file and runs the process defined in the pseudocode in section~\ref{alg:stv psuedocode} on page~\pageref{alg:stv psuedocode}.
 
 \subsection{Schulze}
 \subsubsection{Description}
-The Schulze Method is a method used mainly to determine results in a single-winner election but can also be used to provide rankings and elect multiple candidates in a single election \autocite{Schulze2011}. Ballots are identical to those of the single transferable vote, see figure \ref{fig:stv ballot} on page~\pageref{fig:stv ballot}. The method is compliant with the Condorcet Criterion, which means that if there is a candidate who the majority prefers in a pairwise comparison with every other candidate, that candidate wins. As mentioned, this method relies on comparing the preferences of every candidate to one another as shown in table \ref{tab:pairwise comparison matrix}. If there is a Condorcet winner the process is simple: declare the Condorcet winner a winner and run another iteration without that candidate. Repeat this process until all seats are filled. However, there can be Condorcet ties, where there is no Condorcet winner. There are multiple ways of resolving the tie, one of them being the Schulze Method.
+The Schulze Method is a method used mainly to determine results in a single-winner election but can also be used to provide rankings and elect multiple candidates in a single election \autocite{Schulze2011}. Ballots are identical to those of the single transferable vote, see figure~\ref{fig:stv ballot} on page~\pageref{fig:stv ballot}. The method is compliant with the Condorcet Criterion, which means that if there is a candidate who the majority prefers in a pairwise comparison with every other candidate, that candidate wins. As mentioned, this method relies on comparing the preferences of every candidate to one another as shown in table~\ref{tab:pairwise comparison matrix}. If there is a Condorcet winner the process is simple: declare the Condorcet winner a winner and run another iteration without that candidate. Repeat this process until all seats are filled. However, there can be Condorcet ties, where there is no Condorcet winner. There are multiple ways of resolving the tie, one of them being the Schulze Method.
 
 The Schulze Method resolves ties by investigating possible paths between candidates. For example, if out of a total of 50 ballots 30 ballots prefer $B>A$, 28 ballots prefer $A>C$ and 27 ballots prefer $C>B$, a path from $A$ to $B$ can be created by going $A \rightarrow C \rightarrow B$. The path is said to have the $strength$ of the weakest link in the path. In this example, the path strength between A and B is 27 due to the link between $C$ and $B$ having a strength of 27. There may be several paths between two candidates and the goal of the process is to find the strongest path between any candidate $A$ and $B$, written as $p[A,B]$. By finding the strongest path between all nodes a result can be obtained where $p[X,Y] \geq p[Y,X]$ which means that candidate $X$ wins. The Schulze Method also provides a linear ranking between all candidates, for example that $E > B > A > C > D$. By selecting the $N$ top candidates you can use the method for a multi-seat election. As the process can become very complex as the number of candidates grow, a computer is needed to resolve large elections.
 
-The difficult problem in this method is finding the strongest path between candidates. The problem is called the widest path problem in graph theory. An efficient and relatively simple way to compute this problem is via the Floyd-Warshall algorithm which is used in the implementation. See \ref{lst:schulze algorithm} for the full algorithm.
+The difficult problem in this method is finding the strongest path between candidates. The problem is called the widest path problem in graph theory. An efficient and relatively simple way to compute this problem is via the Floyd-Warshall algorithm which is used in the implementation. See~\ref{lst:schulze algorithm} for the full algorithm.
 
 \begin{table}
 \centering
@@ -420,7 +420,7 @@ Todo:
 	\item Finish summary
 \end{itemize}
 
-Hellosssssssss
+Hello
 
 \pagebreak
 

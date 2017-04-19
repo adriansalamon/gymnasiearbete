@@ -3,7 +3,7 @@ import { Ideology, IdeologyWithProbabilities } from './interfaces'
 
 // Generates the ballots, essentially the output of the program
 function generateBallots(numberOfBallots: number, prob: number[], candidates: number[]): number[][] {
-    // Create temp array combining probability and possib
+    // Create temp array combining probability and candidate number
     let temp: number[][] = []
     for (let i = 0; i < candidates.length; i++) {
         temp.push([prob[i], candidates[i]])

@@ -50,7 +50,7 @@ export default function runElection(input: number[][], seats: number): Result {
         }
         if (hadSurplus.length > 0) {
             // If someone had surplus, loop back to beginning
-            log.push(`Transfered surplus from ${hadSurplus.filter((item, index, array) => array.indexOf(item) === index).join(', ')}`)
+            log.push(`Transferred surplus from ${hadSurplus.filter((item, index, array) => array.indexOf(item) === index).join(', ')}`)
             continue
         }
 

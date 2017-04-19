@@ -6,19 +6,19 @@ interface Result {
 // Calculates the winners in a First-past-the-post election
 export default function calculateWinners(input: number[][], seats: number) {
 
-    // Maps input to first prefrences
-    let firstPrefrences = input.map(el => {
+    // Maps input to first preferences
+    let firstPreferences = input.map(el => {
         return el[0]
     })
 
     let results: Result[] = []
-    // Loops over prefrences and adds/increments result
-    for (let i = 0; i < firstPrefrences.length; i++) {
+    // Loops over preferences and adds/increments result
+    for (let i = 0; i < firstPreferences.length; i++) {
         // Finds index in results array of candidate at i
-        let index = results.findIndex(obj => obj.cand === firstPrefrences[i])
+        let index = results.findIndex(obj => obj.cand === firstPreferences[i])
         // If candidate is not added to results
         if (index === -1) {
-            results.push({ cand: firstPrefrences[i], votes: 1 })
+            results.push({ cand: firstPreferences[i], votes: 1 })
         } else {
             // Increment count if already added in results
             results[index].votes += 1

@@ -14,8 +14,8 @@ export function generateBallots(ideologies: IdeologyWithProbabilities[], numberO
     return result
 }
 
-export function createIdeologyProbabilities(ideologies: Ideology[], numberOfcandidates: number): IdeologyWithProbabilities[] {
-    const candidates = createCandidates(numberOfcandidates, ideologies)
+export function createIdeologyProbabilities(ideologies: Ideology[], numberOfCandidates: number): IdeologyWithProbabilities[] {
+    const candidates = createCandidates(numberOfCandidates, ideologies)
 
     return assignProbabilityToIdeology(ideologies, candidates)
 }

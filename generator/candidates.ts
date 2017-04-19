@@ -27,7 +27,7 @@ export function createCandidates(numberOfCandidates: number, ideologies: Ideolog
                 if ((size === 0 ? 1 : size) > ideology.numberOfCandidates) {
                     ideology.numberOfCandidates++
                     numberOfCandidates--
-                    // Pushes thae new party to the array
+                    // Pushes the new party to the array
                     candidates.push({ ideology: ideologyIndex, size: undefined })
                 }
             }
@@ -123,7 +123,7 @@ function normalize(array: (number | undefined)[]): number[] {
 
 // Calculates the distribution of votes as a negative exponential distribution
 function calculateDistribution (candidates: number, k:number): number[] {
-    // Adjusts the constant to lety more and set 0.5 as the default
+    // Adjusts the constant to change more and set 0.5 as the default
     const adjustedK = (k**2)*0.5
     // Defines the range of the distribution where y > 0.01
     const xLimit = fy(0.01, adjustedK)
@@ -140,7 +140,7 @@ function calculateXValues(candidates: number, k: number, stepSize: number, x: nu
         return result
     } else {
         result.push(fx(x, k))
-        // Recusive call with decremented number of parties and incremented x value
+        // Recursive call with decremented number of parties and incremented x value
         return calculateXValues(candidates-1, k, stepSize, x+stepSize, result)
     }
 }
