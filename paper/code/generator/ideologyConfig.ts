@@ -5,7 +5,7 @@ const ideologyConfig: Ideology[] = [{
     // Large -> steep spread, Small -> flat spread
     candidatePower: 0.2,
     // How inclined voters of this ideology are to vote for a candidate of this ideology
-    // Higer -> more inclined
+    // Higher -> more inclined
     ideologyPower: 1.2
 }, {
 //  ...

@@ -1,5 +1,5 @@
 let results: Result[] = []
-// Loops over prefrences and adds/increments result
+// Loops over preferences and adds/increments result
 for (var i = 0; i < firstPrefrences.length; i++) {
     // Finds index in results array of candidate at i
     let index = results.findIndex(obj => obj.cand === firstPrefrences[i])
