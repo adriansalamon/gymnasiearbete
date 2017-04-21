@@ -75,7 +75,7 @@ function getPairs(ballots: number[][]): PairMap {
             for (let j = 0; j < preferred.length; j++) {
                 // Current preferred vote
                 let preferredVote = preferred[j]
-                // Gets the index of where preferredvote > vote are stored
+                // Gets the index of where preferred vote > vote are stored
                 p[preferredVote] = p[preferredVote] || {}
 
                 p[preferredVote][vote] = p[preferredVote][vote] + 1 || 1

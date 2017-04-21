@@ -42,17 +42,17 @@ function hasCandidateNode(level: CandidateNode[], cand: number): boolean {
 export function eliminate(lowestRanked: number, tree: CandidateNode[], winners: number[]): CandidateNode[] {
     // New tree
     let newTree = [...tree]
-    // Save the children for transfering
+    // Save the children for transferring
     let children = newTree[lowestRanked].children
     // Remove node from array
     newTree = [ ...newTree.slice(0, lowestRanked), ...newTree.slice(lowestRanked +1) ]
-    // Distribute the children onto the tree i.e transfering
+    // Distribute the children onto the tree i.e transferring
     return distribute(children, newTree, winners)
 }
 
 // Checks if any candidate has surplus votes
 export function isSurplus(tree: CandidateNode[], quota: number): boolean {
-    // Maps array and compares count to quota and then reduces to find if any comparison retured true.
+    // Maps array and compares count to quota and then reduces to find if any comparison returned true.
     let surplus = tree.map(cand => (cand.count > quota)).reduce((a,b) => a || b)
     return surplus
 }
@@ -67,10 +67,10 @@ export function transferSurplus(candNumber: number, tree: CandidateNode[], quota
     const surplusFrac = surplusVotes / totalVotes
     const nonSurplusFrac = 1 - surplusFrac
 
-    // Multiplies values in surplus branch to decrese to be equal to quota
+    // Multiplies values in surplus branch to decrease to be equal to quota
     tree[candIndex] = tree[candIndex].multiply(nonSurplusFrac)
     
-    // Maps over all the children, multiplies their brances by the surplus fraction and returns.
+    // Maps over all the children, multiplies their branches by the surplus fraction and returns.
     let transferChildren = tree[candIndex].children.map(child => {
         child = child.multiply(surplusFrac)
         return child
