@@ -45,6 +45,7 @@ The output of the program is a set of ballots, where each ballot is an ordered s
 \subsection{Constructing test scenarios}
 Constructing test scenarios is difficult task. Due to there being so many variables both in real elections and the simulated elections in the generator program, it makes it practically impossible to control all variables. Instead, 3 arbitrary test scenarios will be used. The election will be simulated 1000 times for each scenario and the election data will then run through the different voting methods and the results will be compared. The simulation scenarios are arbitrary but should allow for comparison of the different voting methods. All simulations will have 3 ideologies and 500 voters.
 \subsubsection{Scenario 1}
+\label{sec:method-scenario1}
 The scenario is built around electing one candidate out of eight. The spread of votes within ideologies is flat and all ideologies are ``weak''. This means that the general spread of votes will be even. An example of the distribution of first-preference votes generated in this scenario can be seen in figure~\ref{fig:example of scenario 1}. The full configuration object can be seen in code example~\ref{lst:scenario 1}.
 \codeblock{code/generator/scenario1.ts}{lst:scenario 1}{Configuration object for scenario 1}
 \begin{figure}[H]
@@ -76,6 +77,7 @@ The scenario is built around electing one candidate out of eight. The spread of 
 \label{fig:example of scenario 1}
 \end{figure}
 \subsubsection{Scenario 2}
+\label{sec:method-scenario2}
 The second scenario elects 3 candidates out of 9 total. It features a normal spread of votes between candidates. An example distribution of first-preference votes generated in this scenario can be seen in figure~\ref{fig:example of scenario 2}. The full configuration can be seen in code example~\ref{lst:scenario 2}.
 \codeblock{code/generator/scenario2.ts}{lst:scenario 2}{Scenario 2}
 \begin{figure}[H]
@@ -107,6 +109,7 @@ The second scenario elects 3 candidates out of 9 total. It features a normal spr
 \label{fig:example of scenario 2}
 \end{figure}
 \subsubsection{Scenario 3}
+\label{sec:method-scenario3}
 The second scenario elects 3 candidates out of 9 total. It features a steep spread of votes between candidates. An example distribution of first-preference votes generated in this scenario can be seen in figure~\ref{fig:example of scenario 3}. The full configuration can be seen in code example~\ref{lst:scenario 3}.
 \codeblock{code/generator/scenario3.ts}{lst:scenario 3}{Scenario 3}
 \begin{figure}[H]
@@ -137,6 +140,26 @@ The second scenario elects 3 candidates out of 9 total. It features a steep spre
 	\caption{Example distribution of first-preference votes in scenario 3}
 \label{fig:example of scenario 3}
 \end{figure}
+\section{Metrics for evaluating results}
+Three metrics will be used for comparing the results obtained in the different scenarios. The results obtained with each voting method will be compared against the other methods. Comparisons to the configuration files outlined in Sections~\ref{sec:method-scenario1} -~\ref{sec:method-scenario3}.
+\subsection{Standard deviation}
+The standard deviation of the outcomes represents the variance in outcome due to the pseudorandom nature of the generator program. The standard deviation is calculated according to equation~\ref{eq:standard-deviation}. 
+\begin{equation}
+	\label{eq:standard-deviation}
+	\sigma ={\sqrt {{\frac {1}{N}}\sum _{i=1}^{N}(x_{i}-\mu )^{2}}},{\rm {\ \ where\ \ }}\mu ={\frac {1}{N}}\sum _{i=1}^{N}x_{i}.
+\end{equation}
+\subsection{Misrepresentation}
+The misrepresentation metric gives an idea of how \textit{proportional} the outcomes of a certain voting method in any scenario is. The level of proportionality of a result is a measure of how closely the preferences of a population are matched with the result. Higher proportionality means that the outcome more closely resembles the preferences of the voters. The method of calculating the misrepresentation used in this paper is defined as follows:
+\begin{enumerate}
+	\item Calculate what theoretical election outcome would be the most proportionate based on the configuration file used to generate the ballots.\label{enum:theoretical}
+	\item Compare the actual outcomes of a certain method with the theoretical result obtained in Step \ref{enum:theoretical}.
+	\begin{enumerate}
+		\item Calculate the difference between the measured and theoretical percentage for each ideology.
+		\item Sum all the differences.
+	\end{enumerate}
+\end{enumerate}
+\subsection{Most likely winners}
+Shows what candidates, given a certain scenario, are most likely to win in a particular method.
 \pagebreak
 \section{Specification of voting methods}
 \subsection{First-past-the-post}
@@ -152,10 +175,7 @@ slice $V$ between $0$ and $N$
 \subsubsection{Implementation}
 The first-past-the-post program is implemented in a single file. The inputs of the program can be seen in code example~\ref{lst:fptp inputs}.
 \codeblock{code/fptp/inputs.ts}{lst:fptp inputs}{Inputs for FPTP program}
-The ballot data is first mapped to only include first preferences. Then the algorithm loops over the ballots and gets the sum of votes for each candidate. This process is shown in code example~\ref{lst:fptp processing}.
-\codeblock{code/fptp/processing.ts}{lst:fptp processing}{Processing and formatting of data}
-The results array is sorted and sliced to only include the $N$ candidates with most votes as seen in code example~\ref{lst:fptp result calculation}.
-\codeblock{code/fptp/result.ts}{lst:fptp result calculation}{Finding and returning winning candidates}
+The program sums all the first-preference votes for each candidate and elects the ones with most votes, in accordance with specified amount of seats.
 \subsection{Single transferable vote}
 \subsubsection{Description}
 The Single Transferable Vote method is a more complicated algorithm than the first-past-the-post method. Voters are given ballots where they are supposed to rank candidates in order. The specific rules for if you need to rank all candidates or rank several candidates at the same value not can vary. For the sake of simplicity, in this implementation, all candidates must be ranked at unique and linear values. An example of a ballot can be seen in figure~\ref{fig:stv ballot}.	This means that there is more data available for determining the result of the election which the method can take advantage of. Votes are, if needed, transferred between choices within a ballot, hence the name Single Transferable Vote. The method relies on the concept of a quota, the number of votes you need to be elected. The Droop-Quota, defined as $(\frac{\text{total valid poll}}{\text{seats} + 1})+1$, is often used. If a candidate receives equal or more votes than the quota, he/she is elected. If the number of votes exceed the quota, a fraction of the votes are transferred to the next choice on the ballots that voted for the elected candidate. This process is repeated until there are no candidates with more votes than the quota. If there still are seats yet to be filled, the candidate with fewest votes is eliminated and his/her votes are transferred to the next choice on those ballots. This process is repeated until all seats are filled. The process can become quite complex with many ballots and transferring fractional votes. A computer is therefore essential in order to resolve large scale elections.
@@ -201,10 +221,8 @@ The single transferable vote algorithm uses a tree structure to represent the st
 \codeblock{code/stv/candidateNode.ts}{lst:stv candidate node}{The CandidateNode class}
 With the \Code{add()} and \Code{multiply()} functions it is possible to recursively modify branches. There are two different manipulations that need to be preformed on the tree: transferring surplus votes and eliminating candidates. Both functions rely on the \Code{distribute()} function which is used to distribute a set of nodes onto the tree.
 \codeblock{code/stv/distribute.ts}{lst:stv distribute function}{The distribute function}
-In order to eliminate and transfer surplus votes from any candidate node $A$, the children of $A$ are passed into the distribute function. In the case of transferring surplus votes, the votes for each child node is first multiplied by $\frac{\text{surplus votes}}{\text{total votes}}$ as outlined in the pseudocode in section~\ref{alg:stv psuedocode}. The full source code for functions that manipulate the tree structure can be found in \Code{/stv/tree.ts}.
-
-The main process of the program is found in the \Code{stv/election.ts} file and runs the process defined in the pseudocode in section~\ref{alg:stv psuedocode} on page~\pageref{alg:stv psuedocode}.
-
+In order to eliminate and transfer surplus votes from any candidate node $A$, the children of $A$ are passed into the distribute function. In the case of transferring surplus votes, the votes for each child node is first multiplied by $\frac{\text{surplus votes}}{\text{total votes}}$ as outlined in the pseudocode in Section~\ref{alg:stv psuedocode}. The full source code for functions that manipulate the tree structure can be found in \Code{/stv/tree.ts}.
+The main process of the program is found in the \Code{stv/election.ts} file and runs the process defined in the pseudocode in Section~\ref{alg:stv psuedocode} on page~\pageref{alg:stv psuedocode}.
 \subsection{Schulze}
 \subsubsection{Description}
 The Schulze Method is a method used mainly to determine results in a single-winner election but can also be used to provide rankings and elect multiple candidates in a single election \autocite{Schulze2011}. Ballots are identical to those of the single transferable vote, see figure~\ref{fig:stv ballot} on page~\pageref{fig:stv ballot}. The method is compliant with the Condorcet Criterion, which means that if there is a candidate who the majority prefers in a pairwise comparison with every other candidate, that candidate wins. As mentioned, this method relies on comparing the preferences of every candidate to one another as shown in table~\ref{tab:pairwise comparison matrix}. If there is a Condorcet winner the process is simple: declare the Condorcet winner a winner and run another iteration without that candidate. Repeat this process until all seats are filled. However, there can be Condorcet ties, where there is no Condorcet winner. There are multiple ways of resolving the tie, one of them being the Schulze Method.
@@ -258,7 +276,7 @@ end for\\
 \subsubsection{Implementation}
 The Schulze Method is implemented within the file \Code{schulze/index.ts}. It takes two inputs: a list of ballots and the number of seats to be elected. A ballot is an ordered list of candidates. The output of the program is a list of winners. The program first creates the matrices for both the preferences and paths between candidates.
 \codeblock{code/schulze/maps.ts}{lst:schulze maps}{Data representation}
-The program then runs the algorithm outlined in the pseudocode in section~\ref{alg:schulze psuedocode}.
+The program then runs the algorithm outlined in the pseudocode in Section~\ref{alg:schulze psuedocode}.
 \codeblock{code/schulze/algorithm.ts}{lst:schulze algorithm}{Main algorithm}
 \section{Evaluation of results}
 \subsection{Scenario 1}
@@ -301,9 +319,9 @@ Scenario 1 featured 8 candidates where one was to be elected. Vote spread was fl
 \begin{tabular}{@{}lccc@{}}
 \toprule
 Method & Standard deviation & Misrepresentation & Most likely winners \\ \midrule
-FPTP & 223 & 67\% & 2 \\
-STV & 315 & 7\% & 2 \\
-Schulze & 313 & 9\% & 2 \\ \bottomrule
+FPTP & 223 & 66 & 2 \\
+STV & 315 & 8 & 2 \\
+Schulze & 313 & 9 & 2 \\ \bottomrule
 \end{tabular}
 \end{table}
 % [ 223.39259164082, 315.44928276983, 313.6271671906]
@@ -347,9 +365,9 @@ Scenario 2 featured 9 candidates of which 3 were to be elected. The distribution
 \begin{tabular}{@{}lccc@{}}
 \toprule
 Method & Standard deviation & Misrepresentation & Most likely winners \\ \midrule
-FPTP & 418 & 42\% & 0, 2 \& 5 \\
-STV & 388 & 14\% & 1, 2 \& 5 \\
-Schulze & 393 & 67\% & 2, 5 \& 7  \\ \bottomrule
+FPTP & 418 & 50 & 0, 2 \& 5 \\
+STV & 388 & 47 & 1, 2 \& 5 \\
+Schulze & 393 & 100 & 2, 5 \& 7  \\ \bottomrule
 \end{tabular}
 \end{table}
 % [ 418.13628234977, 388.17206952015, 393.25535950293 ]
@@ -393,9 +411,9 @@ Scenario 3 featured 9 candidates of which 3 were to be elected. The distribution
 	\begin{tabular}{@{}lccc@{}}
 		\toprule
 		Method & Standard deviation & Misrepresentation & Most likely winners \\ \midrule
-		FPTP & 470 & 33\% & 0, 1 \& 2 \\
-		STV & 471 & 33\% & 0, 1 \& 2 \\
-		Schulze & 471 & 33\% & 0, 1 \& 2  \\ \bottomrule
+		FPTP & 470 & 0 & 0, 1 \& 2 \\
+		STV & 471 & 0 & 0, 1 \& 2 \\
+		Schulze & 471 & 0 & 0, 1 \& 2  \\ \bottomrule
 	\end{tabular}
 \end{table}
 \section{Conclusion}
