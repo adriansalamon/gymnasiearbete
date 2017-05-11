@@ -26,7 +26,16 @@ Taking a collective decision as a population is difficult. To solve this issue, 
 The purpose of this essay is to evaluate differences and similarities in terms of election results in three different voting systems: Single Transferable Vote (STV), First-Past-The-Post (FPTP) and the Schulze Method. This paper will only be examining and discussing differences and similarities in the results of the methods, not touching on how practically feasible the methods might be in actual election.
 \pagebreak
 \section{Theory}
-Theory will be here some day
+One would think that by testing all different voting systems and by setting up good criteria for how to evaluate them, it would be possible to come to a definitive conclusion of what system should be used. However, this is not the case. By setting up different mathematical criteria for how a voting system shall behave, it is impossible to satisfy all criteria simultaneously. This is what several theorems, most notably Arrow's Impossibility theorem outlined in 1950, show \autocite{arrow1950difficulty}. This means that any decision regarding choice of electoral system is a balance of their strengths and weaknesses. Simply put: there is no perfect voting system and never will be. This does however not mean that all voting systems are equally efficient, elegant or accurate.
+
+There are several ways of evaluating voting methods that are used. One is the mathematical approach of evaluating what criteria are important to meet and finding elegant methods that satisfy them. Another is by testing and finding probabilities that some criteria are broken — A method that fails to meet a certain criteria only in very few cases is perhaps not that big of a problem. A third way of evaluating methods is not by mathematical criteria, but other metrics such as voter satisfaction or how likely someone is to vote tactically.
+\subsection{Definitions}
+\begin{itemize}
+	\item A \textit{candidate} is someone a voter can vote to elect. Can also be considered as being parties that a voter can vote for.
+	\item An \textit{election} is an event in which voters cast ballots to vote on candidates
+	\item A \textit{seat} is something a candidate can be elected to. A candidate may for example be elected to hold a seat of parliament.
+	\item An \textit{ideology} is a group that both candidates and voters can identify with. They split the whole voting population into several blocks.
+\end{itemize}  
 \pagebreak
 \section{Methodology}
 All voting methods have been implemented in Typescript – mostly due to the author having previous experience with JavaScript. Typescript is a superset of JavaScript with multiple extra features. Most importantly Typescript has optional static type checking. Sample code in typescript can be seen in code example~\ref{lst:typescript example}.
@@ -140,15 +149,15 @@ The second scenario elects 3 candidates out of 9 total. It features a steep spre
 	\caption{Example distribution of first-preference votes in scenario 3}
 \label{fig:example of scenario 3}
 \end{figure}
-\section{Metrics for evaluating results}
+\subsection{Metrics for evaluating results}
 Three metrics will be used for comparing the results obtained in the different scenarios. The results obtained with each voting method will be compared against the other methods. Comparisons to the configuration files outlined in Sections~\ref{sec:method-scenario1} -~\ref{sec:method-scenario3}.
-\subsection{Standard deviation}
+\subsubsection{Standard deviation}
 The standard deviation of the outcomes represents the variance in outcome due to the pseudorandom nature of the generator program. The standard deviation is calculated according to equation~\ref{eq:standard-deviation}. 
 \begin{equation}
 	\label{eq:standard-deviation}
 	\sigma ={\sqrt {{\frac {1}{N}}\sum _{i=1}^{N}(x_{i}-\mu )^{2}}},{\rm {\ \ where\ \ }}\mu ={\frac {1}{N}}\sum _{i=1}^{N}x_{i}.
 \end{equation}
-\subsection{Misrepresentation}
+\subsubsection{Misrepresentation}
 The misrepresentation metric gives an idea of how \textit{proportional} the outcomes of a certain voting method in any scenario is. The level of proportionality of a result is a measure of how closely the preferences of a population are matched with the result. Higher proportionality means that the outcome more closely resembles the preferences of the voters. The method of calculating the misrepresentation used in this paper is defined as follows:
 \begin{enumerate}
 	\item Calculate what theoretical election outcome would be the most proportionate based on the configuration file used to generate the ballots.\label{enum:theoretical}
@@ -158,7 +167,7 @@ The misrepresentation metric gives an idea of how \textit{proportional} the outc
 		\item Sum all the differences.
 	\end{enumerate}
 \end{enumerate}
-\subsection{Most likely winners}
+\subsubsection{Most likely winners}
 Shows what candidates, given a certain scenario, are most likely to win in a particular method.
 \pagebreak
 \section{Specification of voting methods}
