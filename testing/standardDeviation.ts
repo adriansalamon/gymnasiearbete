@@ -1,3 +1,4 @@
+// Calculates the standard deviation of an array of numbers
 export default function (numbers: number[]): number {
     let n = numbers.length
     let s = (numbers.reduce((a,b) => a+b)**2)/n
