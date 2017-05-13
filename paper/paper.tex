@@ -11,11 +11,16 @@
 
 \pagebreak
 
-
-
-
 \begin{abstract}
-	I heard that it's good to have lots of references in the abstract.
+	\noindent Various voting methods are in use across the world. They range from simple processes that everyone can understand to complex mathematical systems. This essay examines differences and similarities of the behavior of three voting methods: the Single Transferable Vote (STV), first-past-the-post (FPTP), and Schulze Method. This is done by implementing each voting method in Typescript and then running election data into them. This paper provides descriptions, pseudocode and implementations of each method. A program to generate voting results was developed in order to test the voting methods. The methods are evaluated in both singe-seat and multi-seat elections. No revolutionary results are presented, but the behavior of each method is evaluated experimentally. Several conclusions are drawn about the behavior of the methods, including to what degree the different methods provided proportionate results.
+\end{abstract}
+\renewcommand{\abstractname}{Referat}
+\pagebreak
+\begin{abstract}
+  \begin{center}
+  	\textbf{Mjukvaruimplementationer och analys av tre valsystem}  
+  \end{center} 
+  \noindent Flera valsystem används i världen. De kan vara allt ifrån enkla processer som alla kan förstå till komplexa matematiska system. Denna uppsats undersöker skillnader och likheter mellan tre valsystem: Enkel Överförbar Röst, Majoritetsval och Schulze-metoden. Detta genom att implementera alla valsystem i Typescript och testa de med olika valdata. Denna uppsats innehåller beskrivningar, pseudokod samt en implementationer för alla valsystem. Ett program för att generera valdata utvecklades för att testa de olika systemen. Valsystemen testades i både enmans- och flermansval. Inga revolutionerande resultat presenteras, men varje systems beteende undersökts experimentellt. Flera slutsatser dras från de olika systemens beteende, inklusive hur proportionella resultat systemen producerade.
 \end{abstract}
 
 \pagebreak
@@ -496,7 +501,7 @@ title={References}
 \caption{Project structure}
 \label{fig:project-structure}
 \end{figure}
-The full source code for this project can be found at \url{https://github.com/adriansalamon/gymnasiearbete}. It is open sourced under the MIT License. In order to run any of the implementations, the Typescript files (\Code{.ts}) need to be compiled to JavaScript files (\Code{.js}) using the Typescript Compiler. Then the code can be executed using Node.js. Code Example \ref{lst:project-example} shows an example of how to run an election.
+The full source code for this project can be found at \url{https://github.com/adriansalamon/gymnasiearbete}. It is open sourced under the MIT License. In order to run any of the implementations, the Typescript files (\Code{.ts}) need to be compiled to JavaScript files (\Code{.js}) using the Typescript Compiler. Then the code can be executed using Node.js. Code Example~\ref{lst:project-example} shows an example of how to run an election.
 \codeblock{code/projectExample.ts}{lst:project-example}{Example of how to run a Schulze Election with the code.}
 All source code is commented and includes extensive use type annotations to help with orientation. The full project structure can be seen in Figure~\ref{fig:project-structure}.
 
