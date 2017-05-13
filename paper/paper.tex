@@ -463,10 +463,7 @@ The key area for furthering this work would be in data collection or creation. A
 \printbibliography{}
 \pagebreak
 \begin{appendices}
-\section{Code}
-The full source code for this project can be found at \url{https://github.com/adriansalamon/gymnasiearbete} and is open sourced under the MIT License. In order to run any of the implementations, the Typescript files need to be compiled to JavaScript files using the Typescript Compiler. Then the code can be executed using Node.js. Code Example \ref{lst:project-example} shows an example of how to run an election.
-\codeblock{code/projectExample.ts}{lst:project-example}{Example of how to run a Schulze Election with the code.}
-All source code is commented and includes extensive use type annotations to help with orientation. The full project structure can be seen in Figure~\ref{fig:project-structure}.
+\section{Code implementation}
 \begin{figure}[H]
 \dirtree{%
 .1 /.
@@ -484,18 +481,19 @@ All source code is commented and includes extensive use type annotations to help
 .3 tree.ts.
 .3 election.ts.
 .3 index.ts.
-.2 testing/.
-.3 standardDeviation.ts.
-.3 test.ts.
 .2 .gitignore.
 .2 LICENSE.txt.
 .2 package.json.
 .2 README.md.
 .2 tsconfig.json.
+.2 tslint.json.
 }
 \caption{Project structure}
 \label{fig:project-structure}
 \end{figure}
+The full source code for this project can be found at \url{https://github.com/adriansalamon/gymnasiearbete} and is open sourced under the MIT License. In order to run any of the implementations, the Typescript files (\Code{.ts}) need to be compiled to JavaScript files (\Code{.js}) using the Typescript Compiler. Then the code can be executed using Node.js. Code Example \ref{lst:project-example} shows an example of how to run an election.
+\codeblock{code/projectExample.ts}{lst:project-example}{Example of how to run a Schulze Election with the code.}
+All source code is commented and includes extensive use type annotations to help with orientation. The full project structure can be seen in Figure~\ref{fig:project-structure}.
 
 
 \end{appendices}
