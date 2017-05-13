@@ -563,5 +563,5 @@ TSWLatexianTemp*
 *.js
 out.json
 test.json
-paper/*.pdf
+paper/paper.pdf
 paper/*.*.gz
