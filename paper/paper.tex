@@ -15,6 +15,7 @@
 
 
 \begin{abstract}
+	I heard that it's good to have lots of references in the abstract.
 \end{abstract}
 
 \pagebreak
@@ -25,14 +26,14 @@
 
 \section{Introduction}
 \subsection{Background}
-Taking a collective decision as a population is difficult. To solve this issue, various voting systems with defined rules are used. They are used to show common preferences within a population, for example what politician a population wants to see elected. Several types of systems have been designed for this purpose and there are a myriad of variations of those systems. They range from simple methods such as “most votes win” to complex processes that can only be practically carried out by a computer. However, practically all voting systems are algorithmic in nature, which makes them interesting to study for both Computer Scientists and Mathematicians. When deciding on what systems that shall be used, it is useful to know what differences and similarities they have.
+Taking a collective decision as a population is difficult. To solve this issue, various voting systems with defined rules are used. They are used to show common preferences within a population, for example what politician a population wants to see elected. Several types of systems have been designed for this purpose and there are a myriad of variations of those systems \autocite{fairvoteND}. They range from simple methods such as “most votes win” to complex processes that can only be practically carried out by a computer. However, practically all voting systems are algorithmic in nature, which makes them interesting to study for both Computer Scientists and Mathematicians. When deciding on what systems that shall be used, it is useful to know what differences and similarities they have.
 \subsection{Purpose}
 The purpose of this essay is to evaluate differences and similarities in terms of election results in three different voting systems: Single Transferable Vote (STV), First-Past-The-Post (FPTP) and the Schulze Method. This paper will only be examining and discussing differences and similarities in the results of the methods, not touching on how practically feasible the methods might be in actual elections.
 \pagebreak
 \section{Theory}
 One would think that by testing all different voting systems and by setting up good criteria for how to evaluate them, it would be possible to come to a definitive conclusion of what system should be used. However, this is not the case. By setting up different mathematical criteria for how a voting system shall behave, it is impossible to satisfy all criteria simultaneously. This is what several theorems, most notably \textit{Arrow's Impossibility Theorem} show \autocite{arrow1950difficulty}. This means that any decision regarding choice of electoral system is a balance of their strengths and weaknesses. Simply put: there is no perfect voting system and never will be. This does, however, not mean that all voting systems are equally efficient, elegant or accurate.
 
-There are several ways of evaluating voting methods. One is the mathematical approach of evaluating what criteria are important to meet and finding methods that satisfy them. Another is by testing and finding probabilities that some criteria are broken — A method that fails to meet a certain criterion only in very few cases is perhaps not a big problem. A third way of evaluating methods is not by mathematical criteria, but other metrics such as voter satisfaction or how likely someone is to vote tactically.
+There are several ways of evaluating voting methods \autocite{green-armytageND}. One is the mathematical approach of evaluating what criteria are important to meet and finding methods that satisfy them \autocite{woodwall1994}. Another is by testing and finding probabilities that some criteria are broken — A method that fails to meet a certain criterion only in very few cases is perhaps not a big problem. A third way of evaluating methods is not by mathematical criteria, but other metrics such as voter satisfaction or how likely someone is to vote tactically.
 \subsection{Definitions}
 \begin{itemize}
 	\item A \textit{candidate} is someone a voter can vote for to elect. It can also be considered as being a party that a voter can vote for.
@@ -42,7 +43,7 @@ There are several ways of evaluating voting methods. One is the mathematical app
 \end{itemize}  
 \pagebreak
 \section{Methodology}
-All voting algorithms have been implemented in Typescript – mostly due to the author having previous experience with JavaScript. Typescript is a superset of JavaScript with multiple extra features. Most importantly, Typescript has optional static type checking. Sample code written in Typescript can be seen in code example~\ref{lst:typescript example}.
+All voting algorithms have been implemented in Typescript – mostly due to the author having previous experience with JavaScript. Typescript is a superset of JavaScript with multiple extra features. Most importantly, Typescript has optional static type checking. Sample code written in Typescript can be seen in code example~\ref{lst:typescript example}. The full source code with instructions for how to run the code can be found in Appendix~\ref{sec:conde implementation}.
 \codeblock{code/typescriptexample.ts}{lst:typescript example}{Basic Typescript syntax}
 \subsection{Modeling test data}
 \label{sec:vote-generation}
@@ -163,7 +164,7 @@ The standard deviation of the outcomes represents the variance in outcome due to
 	\sigma ={\sqrt {{\frac {1}{N}}\sum _{i=1}^{N}(x_{i}-\mu )^{2}}},{\rm {\ \ where\ \ }}\mu ={\frac {1}{N}}\sum _{i=1}^{N}x_{i}.
 \end{equation}
 \subsubsection{Misrepresentation}
-The misrepresentation metric gives an idea of how \textit{proportional} the outcomes of a certain voting method in any scenario is. The level of proportionality of a result is a measure of how closely the preferences of a population in terms of ideology are matched with the result. Higher proportionality means that the election outcome more closely resembles the ideological preferences of the voters. The method of calculating the misrepresentation used in this paper is defined as follows:
+The misrepresentation metric gives an idea of how \textit{proportional} the outcomes of a certain voting method in any scenario is. The level of proportionality of a result is a measure of how closely the preferences of a population in terms of ideology are matched with the result \autocite{king200}. Higher proportionality means that the election outcome more closely resembles the ideological preferences of the voters. The method of calculating the misrepresentation used in this paper is defined as follows:
 \begin{enumerate}
 	\item Calculate what theoretical election outcome would be the most proportionate in terms of ideology based on the configuration file used to generate the ballots.\label{enum:theoretical}
 	\item Compare the actual outcomes of a certain method with the theoretical result obtained in Step~\ref{enum:theoretical}.
@@ -178,9 +179,9 @@ Shows what candidates, given a certain scenario, are most likely to win in a par
 \section{Specification of voting methods}
 \subsection{First-past-the-post}
 \subsubsection{Description}
-The first-past-the-post voting method is a method designed for electing one or several (N) candidates out of a set of candidates. Each voter has one vote that may be allocated to any candidate. In a FPTP election the N candidates with most votes get elected.
+The first-past-the-post voting method is a method designed for electing one or several (N) candidates out of a set of candidates. Each voter has one vote that may be allocated to any candidate. In a FPTP election the N candidates with most votes get elected \autocite{wilkinson2017}.
 \subsubsection{Justification}
-The method is simple and can easily be understood. The first-past-the-post method is widely used in for example the United Kingdom and United States. Comparisons with this method can also easily be made.
+The method is simple and can easily be understood. The first-past-the-post method is widely used in for example the United Kingdom and United States \autocite{aceND}. Comparisons with this method can also easily be made.
 \subsubsection{Pseudocode}
 let $V$ be the set of votes with $V_{i}$ being the number of votes for candidate $i$ \\
 let $N$ be number of candidates to be elected \\
@@ -192,7 +193,7 @@ The first-past-the-post program is implemented in a single file (\Code{/fptp/ind
 The program sums all the first-preference votes for each candidate and elects the ones with most votes, in accordance with specified amount of seats.
 \subsection{Single transferable vote}
 \subsubsection{Description}
-The Single Transferable Vote (STV) is a more complicated voting system than the first-past-the-post method. STV is a multi-seat election method, although it can be used for single-seat elections too. STV becomes equivalent to the Instant-runoff voting method (IRV) in single-seat elections. In an STV election, voters are given ballots in which they are supposed to rank candidates in order. The specific rules for wether one needs to rank all candidates or just a few can vary. For the sake of simplicity, all candidates must be ranked at unique and linear values in this implementation. An example of an STV ballot can be seen in figure~\ref{fig:stv ballot}. By having voters convey more information in a ballot, there is more data available that the method can take advantage of. 
+The Single Transferable Vote (STV) is a more complicated voting system than the first-past-the-post method \autocite{electotal-reform-society2015}. STV is a multi-seat election method, although it can be used for single-seat elections too. STV becomes equivalent to the Instant-runoff voting method (IRV) in single-seat elections. In an STV election, voters are given ballots in which they are supposed to rank candidates in order. The specific rules for wether one needs to rank all candidates or just a few can vary. For the sake of simplicity, all candidates must be ranked at unique and linear values in this implementation. An example of an STV ballot can be seen in figure~\ref{fig:stv ballot}. By having voters convey more information in a ballot, there is more data available that the method can take advantage of. 
 \begin{figure}
 	\centering
 	\includegraphics[height=140px]{ballot}
@@ -200,9 +201,9 @@ The Single Transferable Vote (STV) is a more complicated voting system than the 
 \label{fig:stv ballot}
 \end{figure}
 
-Using this data, votes are transferred between candidates within a ballot, hence the name Single Transferable Vote. The method relies on the concept of a quota, which is the number of votes one needs to be elected. The Droop-Quota, defined as $(\frac{\text{total valid poll}}{\text{seats} + 1})+1$, is often used and is the one implemented in this paper. If a candidate receives equal or more votes than the quota, he/she is elected. If the number of votes for a candidate exceed the quota, a fraction of his/her votes are transferred to the next choice on the ballots that voted for that particular candidate. This process is repeated until there are no candidates with more votes than the quota. If there still are seats yet to be filled, the candidate with fewest votes is eliminated and his/her votes are transferred to the next choice on the ballots which supported the candidate. This process is repeated until all seats are filled. The process can become quite complex with many ballots and transferring of fractional votes. A computer is therefore essential to resolve large scale elections.
+Using this data, votes are transferred between candidates within a ballot, hence the name Single Transferable Vote. The method relies on the concept of a quota, which is the number of votes one needs to be elected. The Droop-Quota, defined as $(\frac{\text{total valid poll}}{\text{seats} + 1})+1$, is often used and is the one implemented in this paper. If a candidate receives equal or more votes than the quota, he/she is elected. If the number of votes for a candidate exceed the quota, a fraction of his/her votes are transferred to the next choice on the ballots that voted for that particular candidate. This process is repeated until there are no candidates with more votes than the quota. If there still are seats yet to be filled, the candidate with fewest votes is eliminated and his/her votes are transferred to the next choice on the ballots which supported the candidate. This process is repeated until all seats are filled \autocite{king200}. The process can become quite complex with many ballots and transferring of fractional votes. A computer is therefore essential to resolve large scale elections.
 \subsubsection{Justification}
-STV is an established voting method in use in several countries. It is used for parliamentary elections in Ireland, Malta and Australia as well as being used in local and regional elections across the world.
+STV is an established voting method in use in several countries. It is used for parliamentary elections in Ireland, Malta and Australia as well as being used in local and regional elections across the world \autocite{tideman1995single}.
 \subsubsection{Pseudocode}
 \label{alg:stv psuedocode}
 let $quota$ be the quota \\
@@ -242,11 +243,11 @@ In order to eliminate and transfer surplus votes from any candidate node $A$, th
 The main process of the program is found in the \Code{stv/election.ts} file and runs the process defined in the pseudocode in Section~\ref{alg:stv psuedocode} on page~\pageref{alg:stv psuedocode}.
 \subsection{Schulze}
 \subsubsection{Description}
-The Schulze Method is a method used mainly to determine results in single-winner elections but can also be used to provide rankings and elect multiple candidates in a single election \autocite{Schulze2011}. Ballots are identical to those of the Single Transferable Vote (see figure~\ref{fig:stv ballot} on page~\pageref{fig:stv ballot}). The method is compliant with the Condorcet Criterion, which means that if there is a candidate who the majority prefers in a pairwise comparison with every other candidate, that candidate wins. As mentioned, this method relies on comparing the preferences of every candidate to one another as shown in table~\ref{tab:pairwise comparison matrix}. If there is a Condorcet winner the process is simple: declare the Condorcet winner a winner and run another iteration without that candidate. Repeat this process until all seats are filled. However, there can be Condorcet ties, where there is no Condorcet winner. There are multiple methods used for resolving Condorcet ties, with one of them being the Schulze Method.
+The Schulze Method is a method used mainly to determine results in single-winner elections but can also be used to provide rankings and elect multiple candidates in a single election \autocite{Schulze2011}. Ballots are identical to those of the Single Transferable Vote (see figure~\ref{fig:stv ballot} on page~\pageref{fig:stv ballot}). The method is compliant with the Condorcet Criterion, which means that if there is a candidate who the majority prefers in a pairwise comparison with every other candidate, that candidate  \autocite{johnson2005}. As mentioned, this method relies on comparing the preferences of every candidate to one another as shown in table~\ref{tab:pairwise comparison matrix}. If there is a Condorcet winner the process is simple: declare the Condorcet winner a winner and run another iteration without that candidate. Repeat this process until all seats are filled. However, there can be Condorcet ties, where there is no Condorcet winner. There are multiple methods used for resolving Condorcet ties, with one of them being the Schulze Method.
 
 The Schulze Method resolves ties by investigating possible paths between candidates. For example, if out of a total of 50 ballots 30 ballots prefer $B>A$, 28 ballots prefer $A>C$ and 27 ballots prefer $C>B$, a path from $A$ to $B$ can be created by going $A \rightarrow C \rightarrow B$. The path is said to have the $strength$ of the weakest link in the path. In this example, the path strength between A and B is 27 due to the link between $C$ and $B$ having a strength of 27. There may be several paths between two candidates and the goal of the process is to find the strongest path between any candidate $A$ and $B$, written as $p[A,B]$. By finding the strongest path between all nodes a result can be obtained where $p[X,Y] \geq p[Y,X]$ which means that candidate $X$ wins. The Schulze Method also provides a linear ranking between all candidates, for example that $E > B > A > C > D$. By selecting the $N$ top candidates one can use the method for a multi-seat election. As the process can become very complex as the number of candidates grow, a computer is needed to resolve large elections.
 
-The difficult problem in this method is finding the strongest path between candidates. The problem is called the widest path problem in graph theory. An efficient and relatively simple way to compute this problem is via the Floyd-Warshall algorithm which is used in the implementation. See Code Example~\ref{lst:schulze algorithm} for the full algorithm.
+The difficult problem in this method is finding the strongest path between candidates. The problem is known as the widest path problem in graph theory. An efficient and relatively simple way to compute this problem is via the Floyd-Warshall algorithm which is used in the implementation \autocite{wikipedia2017warshall}. See Code Example~\ref{lst:schulze algorithm} for the full algorithm.
 
 \begin{table}
 \centering
@@ -263,7 +264,7 @@ The difficult problem in this method is finding the strongest path between candi
 \label{tab:pairwise comparison matrix}
 \end{table}
 \subsubsection{Justification}
-The Schulze method is used by multiple organizations around the world. It has been used by various software organizations such as The Wikimedia Foundation, The Debian Project and Ubuntu. It is also used by political parties such as the Pirate Party in Sweden and various other countries. The process also differs greatly in both method and implementation from the two other voting methods used in this paper.
+The Schulze method is used by multiple organizations around the world \autocite{wikipedia2017schulze2}. It has been used by various software organizations such as The Wikimedia Foundation, The Debian Project and Ubuntu. It is also used by political parties such as the Pirate Party in Sweden and various other countries. The process also differs greatly in both method and implementation from the two other voting methods used in this paper.
 \subsubsection{Pseudocode}
 \label{alg:schulze psuedocode}
 let $d[i,j]$ be the number of ballots that prefer candidate $i$ to candidate $j$\\
@@ -460,10 +461,14 @@ While the findings of this paper are hardly revolutionary, the nature of the thr
 The key area for furthering this work would be in data collection or creation. A more sophisticated procedure for generating test data could be developed and run with more extensive test scenarios. Data from the real world could also be collected in actual elections and run through the different algorithms to test them. One could also write software that generates lots of scenarios with different parameters and analyzes how they differ automatically. Since the source code for this paper is open sourced under the MIT License, anyone can freely copy, modify and build on this work. This also makes for an open and transparent voting method where every voter can audit the system in use.
 \pagebreak
 
-\printbibliography{}
+\printbibliography[
+heading=bibintoc,
+title={References}
+]
 \pagebreak
 \begin{appendices}
 \section{Code implementation}
+\label{sec:conde implementation}
 \begin{figure}[H]
 \dirtree{%
 .1 /.
@@ -491,7 +496,7 @@ The key area for furthering this work would be in data collection or creation. A
 \caption{Project structure}
 \label{fig:project-structure}
 \end{figure}
-The full source code for this project can be found at \url{https://github.com/adriansalamon/gymnasiearbete} and is open sourced under the MIT License. In order to run any of the implementations, the Typescript files (\Code{.ts}) need to be compiled to JavaScript files (\Code{.js}) using the Typescript Compiler. Then the code can be executed using Node.js. Code Example \ref{lst:project-example} shows an example of how to run an election.
+The full source code for this project can be found at \url{https://github.com/adriansalamon/gymnasiearbete}. It is open sourced under the MIT License. In order to run any of the implementations, the Typescript files (\Code{.ts}) need to be compiled to JavaScript files (\Code{.js}) using the Typescript Compiler. Then the code can be executed using Node.js. Code Example \ref{lst:project-example} shows an example of how to run an election.
 \codeblock{code/projectExample.ts}{lst:project-example}{Example of how to run a Schulze Election with the code.}
 All source code is commented and includes extensive use type annotations to help with orientation. The full project structure can be seen in Figure~\ref{fig:project-structure}.
 
