@@ -34,7 +34,6 @@
 Taking a collective decision as a population is difficult. To solve this issue, various voting systems with defined rules are used. They are used to show common preferences within a population, for example what politician a population wants to see elected. Several types of systems have been designed for this purpose and there are a myriad of variations of those systems \autocite{fairvoteND}. They range from simple methods such as “most votes win” to complex processes that can only be practically carried out by a computer. However, practically all voting systems are algorithmic in nature, which makes them interesting to study for both Computer Scientists and Mathematicians. When deciding on what systems that shall be used, it is useful to know what differences and similarities they have.
 \subsection{Purpose}
 The purpose of this essay is to evaluate differences and similarities in terms of election results in three different voting systems: Single Transferable Vote (STV), First-Past-The-Post (FPTP) and the Schulze Method. This paper will only be examining and discussing differences and similarities in the results of the methods, not touching on how practically feasible the methods might be in actual elections.
-\pagebreak
 \section{Theory}
 One would think that by testing all different voting systems and by setting up good criteria for how to evaluate them, it would be possible to come to a definitive conclusion of what system should be used. However, this is not the case. By setting up different mathematical criteria for how a voting system shall behave, it is impossible to satisfy all criteria simultaneously. This is what several theorems, most notably \textit{Arrow's Impossibility Theorem} show \autocite{arrow1950difficulty}. This means that any decision regarding choice of electoral system is a balance of their strengths and weaknesses. Simply put: there is no perfect voting system and never will be. This does, however, not mean that all voting systems are equally efficient, elegant or accurate.
 
@@ -46,7 +45,6 @@ There are several ways of evaluating voting methods \autocite{green-armytageND}.
 	\item A \textit{seat} is something a candidate can be elected to. A candidate may for example be elected to hold a seat of parliament.
 	\item An \textit{ideology} is a group that both candidates and voters can identify with. They split the whole voting population into several blocks. Several candidates can belong to one ideology.
 \end{itemize}  
-\pagebreak
 \section{Methodology}
 All voting algorithms have been implemented in Typescript – mostly due to the author having previous experience with JavaScript. Typescript is a superset of JavaScript with multiple extra features. Most importantly, Typescript has optional static type checking. Sample code written in Typescript can be seen in code example~\ref{lst:typescript example}. The full source code with instructions for how to run the code can be found in Appendix~\ref{sec:conde implementation}.
 \codeblock{code/typescriptexample.ts}{lst:typescript example}{Basic Typescript syntax}
@@ -180,7 +178,6 @@ The misrepresentation metric gives an idea of how \textit{proportional} the outc
 \end{enumerate}
 \subsubsection{Most likely winners}
 Shows what candidates, given a certain scenario, are most likely to win in a particular method.
-\pagebreak
 \section{Specification of voting methods}
 \subsection{First-past-the-post}
 \subsubsection{Description}
@@ -273,8 +270,7 @@ The Schulze method is used by multiple organizations around the world \autocite{
 \subsubsection{Pseudocode}
 \label{alg:schulze psuedocode}
 let $d[i,j]$ be the number of ballots that prefer candidate $i$ to candidate $j$\\
-let $p[i,j]$ be the strength of the strongest path from candidate $i$ to candidate $j$\\
-let $C$ be the number of candidates
+let $p[i,j]$ be the strength of the strongest path from candidate $i$ to $j$\\
 for $i$ from 1 to $C$\\
 \tab for $j$ from 1 to $C$\\
 \tab\tab if ($i \ne j$)\\
@@ -298,7 +294,7 @@ for $i$ from 1 to $C$\\
 \tab end for \\
 end for\\
 \subsubsection{Implementation}
-The Schulze Method is implemented within the file \Code{schulze/index.ts}. It takes two inputs: a list of ballots and the number of seats to be elected. A ballot is an ordered list of candidates. The output of the program is a list of winners. The program first creates the matrices for both the preferences and paths between candidates as seen in Code Example~\ref{lst:schulze-maps}.
+The Schulze Method is implemented within the file \Code{schulze/index.ts}. It takes two inputs: a list of ballots and the number of seats to be elected. A ballot is an ordered list of candidates. The output of the program is a list of winners. Data representation can be seen in Code Example~\ref{lst:schulze-maps}.
 \codeblock{code/schulze/maps.ts}{lst:schulze-maps}{Data representation}
 The program then runs the algorithm outlined in the pseudocode in Section~\ref{alg:schulze psuedocode}.
 \codeblock{code/schulze/algorithm.ts}{lst:schulze algorithm}{Main algorithm}
@@ -353,6 +349,18 @@ Schulze & 313 & 9 & 2 \\ \bottomrule
 \subsection{Scenario 2}
 \label{sec:resuls-scenario2}
 Scenario 2 featured nine candidates of which three were to be elected. The distribution of votes was ``normal'', and as seen in figure~\ref{fig:example of scenario 2} on page~\ref{fig:example of scenario 2}, the election is very close with many candidates having a similar percentage of first-preference votes. The results obtained in scenario 2 are very interesting. FPTP tended to underrepresent candidate 1, and elected a candidate from ideology 2 only in 28\% of elections, despite the ideology theoretically having 30\% of popular support. The Schulze method also tended to underrepresent ideology 2. It instead overrepresented ideology 3, electing 3 candidates of ideology 3 in 50\% of elections. This indicates that the Schulze method is not a representative method in a multi-seat election. The STV result showed less misrepresentation than the FPTP result, which was to be expected since the method has access to more data of any voter's preferences. The results in scenario 2 can be observed in figure~\ref{fig:scenario 2 result} and the key metrics can be seen in table~\ref{tab:scenario 2 result}.
+\begin{table}[H]
+\centering
+\caption{Key metrics for result in scenario 2}
+\label{tab:scenario 2 result}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Method & Standard deviation & Misrepresentation & Most likely winners \\ \midrule
+FPTP & 418 & 50 & 0, 2 \& 5 \\
+STV & 388 & 47 & 1, 2 \& 5 \\
+Schulze & 393 & 100 & 2, 5 \& 7  \\ \bottomrule
+\end{tabular}
+\end{table}
 \begin{figure}[H]
 	\centering
 	\begin{tikzpicture}
@@ -384,22 +392,22 @@ Scenario 2 featured nine candidates of which three were to be elected. The distr
 \label{fig:scenario 2 result}
 \end{figure}
 
-\begin{table}[H]
-\centering
-\caption{Key metrics for result in scenario 2}
-\label{tab:scenario 2 result}
-\begin{tabular}{@{}lccc@{}}
-\toprule
-Method & Standard deviation & Misrepresentation & Most likely winners \\ \midrule
-FPTP & 418 & 50 & 0, 2 \& 5 \\
-STV & 388 & 47 & 1, 2 \& 5 \\
-Schulze & 393 & 100 & 2, 5 \& 7  \\ \bottomrule
-\end{tabular}
-\end{table}
 % [ 418.13628234977, 388.17206952015, 393.25535950293 ]
 \subsection{Scenario 3}
 \label{sec:resuls-scenario3}
 Scenario 3 featured nine candidates of which three were to be elected. The distribution of votes was  ``steep''. This can be seen by the first-preference votes in figure~\ref{fig:example of scenario 3} on Page~\pageref{fig:example of scenario 3}. The results obtained with each method in this scenario are practically identical. From this, it can be inferred that the results of the methods converge as the preferences in a population become more clear. The results obtained in this scenario can be seen in figure~\ref{fig:scenario 3 result}. The key metrics can be found in table~\ref{tab:scenario 3 result}.
+\begin{table}[H]
+	\centering
+	\caption{Key metrics for result in scenario 3}
+\label{tab:scenario 3 result}
+	\begin{tabular}{@{}lccc@{}}
+		\toprule
+		Method & Standard deviation & Misrepresentation & Most likely winners \\ \midrule
+		FPTP & 470 & 0 & 0, 1 \& 2 \\
+		STV & 471 & 0 & 0, 1 \& 2 \\
+		Schulze & 471 & 0 & 0, 1 \& 2  \\ \bottomrule
+	\end{tabular}
+\end{table}
 \begin{figure}[H]
 	\centering
 	\begin{tikzpicture}
@@ -430,19 +438,6 @@ Scenario 3 featured nine candidates of which three were to be elected. The distr
 	\caption{Results in scenario 3}
 \label{fig:scenario 3 result}
 \end{figure}
-
-\begin{table}[H]
-	\centering
-	\caption{Key metrics for result in scenario 3}
-\label{tab:scenario 3 result}
-	\begin{tabular}{@{}lccc@{}}
-		\toprule
-		Method & Standard deviation & Misrepresentation & Most likely winners \\ \midrule
-		FPTP & 470 & 0 & 0, 1 \& 2 \\
-		STV & 471 & 0 & 0, 1 \& 2 \\
-		Schulze & 471 & 0 & 0, 1 \& 2  \\ \bottomrule
-	\end{tabular}
-\end{table}
 \section{Conclusion}
 The results obtained in the three different scenarios provide some insight into the varying properties of the different voting systems. Each of the methods showed different behavior in the different scenarios. For instance, the methods provided practically the same result in scenario 3 but wildly varying results in scenario 2. While the testing method used in this paper may not have been the most robust way of comparing the voting methods, several conclusions can be drawn from the data. They are outlined in 4 points below.
 \begin{enumerate}

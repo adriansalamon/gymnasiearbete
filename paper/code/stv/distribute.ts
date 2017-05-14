@@ -1,4 +1,4 @@
-// Distributes a list of nodes onto the tree. Returns a new tree.
+// Distributes nodes onto the tree. Returns new tree.
 function distribute(nodeList: CandidateNode[], tree: CandidateNode[], winners: number[]): CandidateNode[] {
     // Loops through each candidate node in the list
     for (let i = 0; i < nodeList.length; i++) {
