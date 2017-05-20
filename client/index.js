@@ -50,15 +50,15 @@ class SortableComponent extends Component {
     super(props);
     this.state = {
       items: [
-        { name: "Socialdemokraterna", index: 0 },
-        { name: "Moderaterna", index: 1 },
-        { name: "Sverigedemokraterna", index: 2 },
-        { name: "Centerpartiet", index: 3 },
-        { name: "Vänsterpartiet", index: 4 },
-        { name: "Liberalerna", index: 5 },
-        { name: "Miljöpartiet", index: 6 },
-        { name: "Kristdemokraterna", index: 7 },
-        { name: "Feministiskt initiativ", index: 8 }
+        { name: "Socialdemokraterna (S)", index: 0 },
+        { name: "Moderaterna (M)", index: 1 },
+        { name: "Sverigedemokraterna (SD)", index: 2 },
+        { name: "Centerpartiet (C)", index: 3 },
+        { name: "Vänsterpartiet (V)", index: 4 },
+        { name: "Liberalerna (L)", index: 5 },
+        { name: "Miljöpartiet (MP)", index: 6 },
+        { name: "Kristdemokraterna (KD)", index: 7 },
+        { name: "Feministiskt initiativ (F!)", index: 8 }
       ]
     };
     this.onSortEnd = ({ oldIndex, newIndex }) => {
