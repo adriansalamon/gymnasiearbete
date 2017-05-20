@@ -64,14 +64,20 @@ class SortableComponent extends Component {
 
   handleClicks = () => {
     let json = this.state.items.map(item => item.index);
-    console.log(json);
+    if (
+      confirm("Are you sure you want to save this thing into the database?")
+    ) {
+      console.log(json);
+    } else {
+      // Do nothing!
+    }
   };
 
   render() {
     return (
       <div>
         <SortableList items={this.state.items} onSortEnd={this.onSortEnd} />
-        <button onClick={this.handleClicks} />
+        <button onClick={this.handleClicks}>Submit</button>
       </div>
     );
   }
