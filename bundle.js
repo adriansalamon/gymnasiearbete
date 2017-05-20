@@ -11607,7 +11607,7 @@ var SortableList = (0, _reactSortableHoc.SortableContainer)(function (_ref2) {
       return _react2.default.createElement(SortableItem, {
         key: "item-" + index,
         index: index,
-        value: value,
+        value: value.name,
         number: index
       });
     })
@@ -11622,8 +11622,19 @@ var SortableComponent = function (_Component) {
 
     var _this = _possibleConstructorReturn(this, (SortableComponent.__proto__ || Object.getPrototypeOf(SortableComponent)).call(this, props));
 
+    _this.handleClicks = function () {
+      var json = _this.state.items.map(function (item) {
+        return item.index;
+      });
+      if (confirm("Are you sure you want to save this thing into the database?")) {
+        console.log(json);
+      } else {
+        // Do nothing!
+      }
+    };
+
     _this.state = {
-      items: ["Socialdemokraterna", "Moderaterna", "Sverigedemokraterna", "Centerpartiet", "Vänsterpartiet", "Liberalerna", "Miljöpartiet", "Kristdemokraterna", "Feministiskt initiativ"]
+      items: [{ name: "Socialdemokraterna", index: 0 }, { name: "Moderaterna", index: 1 }, { name: "Sverigedemokraterna", index: 2 }, { name: "Centerpartiet", index: 3 }, { name: "Vänsterpartiet", index: 4 }, { name: "Liberalerna", index: 5 }, { name: "Miljöpartiet", index: 6 }, { name: "Kristdemokraterna", index: 7 }, { name: "Feministisktinitiativ", index: 8 }]
     };
     _this.onSortEnd = function (_ref3) {
       var oldIndex = _ref3.oldIndex,
@@ -11639,7 +11650,16 @@ var SortableComponent = function (_Component) {
   _createClass(SortableComponent, [{
     key: "render",
     value: function render() {
-      return _react2.default.createElement(SortableList, { items: this.state.items, onSortEnd: this.onSortEnd });
+      return _react2.default.createElement(
+        "div",
+        null,
+        _react2.default.createElement(SortableList, { items: this.state.items, onSortEnd: this.onSortEnd }),
+        _react2.default.createElement(
+          "button",
+          { onClick: this.handleClicks },
+          "Submit"
+        )
+      );
     }
   }]);
 
