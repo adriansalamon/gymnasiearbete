@@ -43,6 +43,10 @@ var Vote = mongoose.model('Votes', schema)
 
 app.use(bodyParser.json())
 
+app.get('/', (req, res) => {
+  res.send("Hello world")
+})
+
 app.post('/submit', (req, res) => {
   var json = req.body
   if (json.votes) {
