@@ -45,7 +45,7 @@ app.post('/submit', (req, res) => {
         vote.save((err) => {
             if (err) {
                 console.log(err);
-                return res.send(err);
+                return res.status(400).send(err);
             }
             else {
                 return res.send('Result submitted');
@@ -53,7 +53,7 @@ app.post('/submit', (req, res) => {
         });
     }
     else {
-        return res.send('Error in json request format');
+        return res.status(400).send('Error in json request format');
     }
 });
 app.get('/result', (req, res) => {
