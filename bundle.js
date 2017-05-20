@@ -12099,12 +12099,12 @@ var SortableComponent = function (_Component) {
           return item.index;
         }) };
       if (confirm("Are you sure you want to submit your vote?")) {
-        fetch("http://gymnasiearbete.herokuapp.com/submit", {
+        fetch("https://gymnasiearbete.herokuapp.com/submit", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(json)
         }).then(function (res) {
-          window.location = "/done";
+          window.location = "./done";
         }).catch(function (err) {
           return console.log(err);
         });
