@@ -10,7 +10,8 @@ import "whatwg-fetch";
 const listStyle = {
   backgroundColor: "#f3f3f3",
   border: "1px solid #efefef",
-  borderRadius: "3px"
+  borderRadius: "3px",
+  marginBottom: "0.8em"
 };
 
 const listItemStyle = {
@@ -19,6 +20,10 @@ const listItemStyle = {
   listStyleType: "none",
   padding: "12px 20px",
   borderBottom: "1px solid #efefef"
+};
+
+const buttonStyle = {
+  float: "right"
 };
 
 const SortableItem = SortableElement(({ value, number }) => (
@@ -53,7 +58,7 @@ class SortableComponent extends Component {
         { name: "Liberalerna", index: 5 },
         { name: "Miljöpartiet", index: 6 },
         { name: "Kristdemokraterna", index: 7 },
-        { name: "Feministisktinitiativ", index: 8 }
+        { name: "Feministiskt initiativ", index: 8 }
       ]
     };
     this.onSortEnd = ({ oldIndex, newIndex }) => {
@@ -64,13 +69,17 @@ class SortableComponent extends Component {
   }
 
   handleClicks = () => {
-    let json = this.state.items.map(item => item.index);
+    let json = { votes: this.state.items.map(item => item.index) };
     if (confirm("Are you sure you want to submit your vote?")) {
-      fetch("http://gymnasiearbete.herokuapp.com/result")
-        .then(res => res.json())
-        .then(json => {
-          console.log(json);
-        });
+      fetch("http://gymnasiearbete.herokuapp.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(json)
+      })
+        .then(res => {
+          window.location = "/done";
+        })
+        .catch(err => console.log(err));
     } else {
       // Do nothing!
     }
@@ -79,8 +88,9 @@ class SortableComponent extends Component {
   render() {
     return (
       <div>
+
         <SortableList items={this.state.items} onSortEnd={this.onSortEnd} />
-        <button onClick={this.handleClicks}>Submit</button>
+        <button onClick={this.handleClicks} style={buttonStyle}>Submit</button>
       </div>
     );
   }

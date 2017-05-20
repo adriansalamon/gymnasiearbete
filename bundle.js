@@ -12043,7 +12043,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var listStyle = {
   backgroundColor: "#f3f3f3",
   border: "1px solid #efefef",
-  borderRadius: "3px"
+  borderRadius: "3px",
+  marginBottom: "0.8em"
 };
 
 var listItemStyle = {
@@ -12052,6 +12053,10 @@ var listItemStyle = {
   listStyleType: "none",
   padding: "12px 20px",
   borderBottom: "1px solid #efefef"
+};
+
+var buttonStyle = {
+  float: "right"
 };
 
 var SortableItem = (0, _reactSortableHoc.SortableElement)(function (_ref) {
@@ -12090,14 +12095,18 @@ var SortableComponent = function (_Component) {
     var _this = _possibleConstructorReturn(this, (SortableComponent.__proto__ || Object.getPrototypeOf(SortableComponent)).call(this, props));
 
     _this.handleClicks = function () {
-      var json = _this.state.items.map(function (item) {
-        return item.index;
-      });
+      var json = { votes: _this.state.items.map(function (item) {
+          return item.index;
+        }) };
       if (confirm("Are you sure you want to submit your vote?")) {
-        fetch("http://gymnasiearbete.herokuapp.com/result").then(function (res) {
-          return res.json();
-        }).then(function (json) {
-          console.log(json);
+        fetch("http://gymnasiearbete.herokuapp.com/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(json)
+        }).then(function (res) {
+          window.location = "/done";
+        }).catch(function (err) {
+          return console.log(err);
         });
       } else {
         // Do nothing!
@@ -12105,7 +12114,7 @@ var SortableComponent = function (_Component) {
     };
 
     _this.state = {
-      items: [{ name: "Socialdemokraterna", index: 0 }, { name: "Moderaterna", index: 1 }, { name: "Sverigedemokraterna", index: 2 }, { name: "Centerpartiet", index: 3 }, { name: "Vänsterpartiet", index: 4 }, { name: "Liberalerna", index: 5 }, { name: "Miljöpartiet", index: 6 }, { name: "Kristdemokraterna", index: 7 }, { name: "Feministisktinitiativ", index: 8 }]
+      items: [{ name: "Socialdemokraterna", index: 0 }, { name: "Moderaterna", index: 1 }, { name: "Sverigedemokraterna", index: 2 }, { name: "Centerpartiet", index: 3 }, { name: "Vänsterpartiet", index: 4 }, { name: "Liberalerna", index: 5 }, { name: "Miljöpartiet", index: 6 }, { name: "Kristdemokraterna", index: 7 }, { name: "Feministiskt initiativ", index: 8 }]
     };
     _this.onSortEnd = function (_ref3) {
       var oldIndex = _ref3.oldIndex,
@@ -12127,7 +12136,7 @@ var SortableComponent = function (_Component) {
         _react2.default.createElement(SortableList, { items: this.state.items, onSortEnd: this.onSortEnd }),
         _react2.default.createElement(
           "button",
-          { onClick: this.handleClicks },
+          { onClick: this.handleClicks, style: buttonStyle },
           "Submit"
         )
       );
