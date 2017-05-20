@@ -8,6 +8,7 @@ var Schema = mongoose.Schema;
 const fptp_1 = require("./server/fptp");
 const stv_1 = require("./server/stv");
 const schulze_1 = require("./server/schulze");
+var port = process.env.PORT || 8080;
 const parties = [
     "S",
     "M",
@@ -30,6 +31,9 @@ var schema = new Schema({
 });
 var Vote = mongoose.model('Votes', schema);
 app.use(bodyParser.json());
+app.get('/', (req, res) => {
+    res.send("Hello world");
+});
 app.post('/submit', (req, res) => {
     var json = req.body;
     if (json.votes) {
@@ -65,6 +69,6 @@ app.get('/result', (req, res) => {
         res.send({ fptp: fptpRes, stv: stvRes, schulze: schulzeRes });
     });
 });
-app.listen(3000, function () {
-    console.log('Example app listening on port 3000!');
+app.listen(port, function () {
+    console.log('App listening on port 3000!');
 });

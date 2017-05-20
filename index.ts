@@ -13,6 +13,9 @@ interface Db {
   votes: number[]
 }
 
+var port = process.env.PORT || 8080
+
+
 const parties = [
   "S",
   "M",
@@ -84,6 +87,6 @@ app.get('/result', (req,res) => {
 
 
 
-app.listen((process.env.PORT || 3000), function () {
+app.listen(port, function () {
   console.log('App listening on port 3000!')
 })
