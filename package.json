@@ -21,8 +21,5 @@
     "url": "https://github.com/adriansalamon/gymnasiearbete/issues"
   },
   "homepage": "https://github.com/adriansalamon/gymnasiearbete#readme",
-  "dependencies": {
-    "react": "^15.5.4",
-    "react-dom": "^15.5.4"
-  }
+  "dependencies": {}
 }
