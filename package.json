@@ -4,12 +4,19 @@
   "description": "Paper can be found [here](paper/paper.pdf). All individual modules/programs can be found in their respective folders. All source code is commented with documentation. If you want to run the programs yourself, you will first need to transpile all .ts files to .js files with the typescript transpiler. Then you can run any module with node.js. For example, to run a schulze election: ```javascript import schulze from '/path/to/schulze' const ballots = [[0,1,2],[2,1,0],[0,2,1]] const seats = 1 const result = schulze(ballots, seats)",
   "main": "test.js",
   "scripts": {
-    "start": "node index.js",
+    "build": "webpack",
+    "run": "webpack-dev-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Adrian Salamon",
   "license": "MIT",
-  "devDependencies": {},
+  "devDependencies": {
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.0.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "html-webpack-plugin": "^2.28.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/adriansalamon/gymnasiearbete.git"
@@ -21,5 +28,10 @@
     "url": "https://github.com/adriansalamon/gymnasiearbete/issues"
   },
   "homepage": "https://github.com/adriansalamon/gymnasiearbete#readme",
-  "dependencies": {}
+  "dependencies": {
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "webpack": "^2.5.1",
+    "webpack-dev-server": "^2.4.5"
+  }
 }
