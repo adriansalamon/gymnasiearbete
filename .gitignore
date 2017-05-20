@@ -560,7 +560,6 @@ TSWLatexianTemp*
 
 # OWN EXCLUDE
 
-*.js
 out.json
 test.json
 paper/paper.pdf
