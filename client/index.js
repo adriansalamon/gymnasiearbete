@@ -77,7 +77,7 @@ class SortableComponent extends Component {
         body: JSON.stringify(json)
       })
         .then(res => {
-          window.location = "/gymnasiearbete/done";
+          window.location = "/wew/sdsad";
         })
         .catch(err => console.log(err));
     } else {
