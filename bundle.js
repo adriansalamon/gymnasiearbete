@@ -12104,7 +12104,7 @@ var SortableComponent = function (_Component) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(json)
         }).then(function (res) {
-          window.location = "gymnasiearbete/done";
+          window.location = "/gymnasiearbete/done";
         }).catch(function (err) {
           return console.log(err);
         });
