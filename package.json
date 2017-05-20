@@ -30,6 +30,7 @@
   },
   "homepage": "https://github.com/adriansalamon/gymnasiearbete#readme",
   "dependencies": {
+    "fetch": "^1.1.0",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-sortable-hoc": "^0.6.3",

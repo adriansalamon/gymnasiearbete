@@ -5,6 +5,7 @@ import {
   SortableElement,
   arrayMove
 } from "react-sortable-hoc";
+import "whatwg-fetch";
 
 const listStyle = {
   backgroundColor: "#f3f3f3",
@@ -21,7 +22,7 @@ const listItemStyle = {
 };
 
 const SortableItem = SortableElement(({ value, number }) => (
-  <li style={listItemStyle}>{number + 1}: {value}</li>
+  <li style={listItemStyle}>{value}</li>
 ));
 
 const SortableList = SortableContainer(({ items }) => {
@@ -64,10 +65,12 @@ class SortableComponent extends Component {
 
   handleClicks = () => {
     let json = this.state.items.map(item => item.index);
-    if (
-      confirm("Are you sure you want to save this thing into the database?")
-    ) {
-      console.log(json);
+    if (confirm("Are you sure you want to submit your vote?")) {
+      fetch("http://gymnasiearbete.herokuapp.com/result")
+        .then(res => res.json())
+        .then(json => {
+          console.log(json);
+        });
     } else {
       // Do nothing!
     }
