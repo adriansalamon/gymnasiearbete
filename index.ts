@@ -33,7 +33,7 @@ var conn = mongoose.connection
 
 conn.on('error', console.error.bind(console, 'connection error:'))
 
-conn.once('open', function () {console.log("Great success!")})
+conn.once('open', function () {console.log("Connected to mongodb database!")})
 
 var schema = new Schema({
   votes: [Number]
@@ -50,7 +50,7 @@ app.use((req, res, next) => {
 });
 
 app.get('/', (req, res) => {
-  res.send("Hello world")
+  res.send("This is an API for voting program")
 })
 
 app.post('/submit', (req, res) => {
@@ -70,22 +70,26 @@ app.post('/submit', (req, res) => {
   }
 })
 
-app.get('/result', (req,res) => {
-  Vote.find({}, (err, users: Db[]) => {
-    let ballots = users.map(user => {
-        return user.votes
+app.post('/result', (req,res) => {
+  if(typeof req.body.seats == "number") {
+    Vote.find({}, (err, users: Db[]) => {
+      let ballots = users.map(user => {
+          return user.votes
+      })
+      const fptpRes = fptp(ballots, req.body.seats).map(winner => {
+        return {index: winner,party: parties[winner]}
+      })
+      const stvRes = stv(ballots, req.body.seats).winners.map(winner => {
+        return {index: winner, party: parties[winner]}
+      })
+      const schulzeRes = schulze(ballots, req.body.seats).map(winner => {
+        return {index: winner,party: parties[winner]}
+      })
+      res.send({fptp: fptpRes, stv: stvRes, schulze: schulzeRes})
     })
-    const fptpRes = fptp(ballots, 1).map(winner => {
-      return {index: winner,party: parties[winner]}
-    })
-    const stvRes = stv(ballots, 1).winners.map(winner => {
-      return {index: winner, party: parties[winner]}
-    })
-    const schulzeRes = schulze(ballots, 1).map(winner => {
-      return {index: winner,party: parties[winner]}
-    })
-    res.send({fptp: fptpRes, stv: stvRes, schulze: schulzeRes})
-  })
+  } else {
+    res.status(400).send("Malformed json payload")
+  }
 })
 
 

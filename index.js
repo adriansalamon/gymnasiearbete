@@ -24,7 +24,7 @@ mongoose.Promise = global.Promise;
 mongoose.connect(mongoUri);
 var conn = mongoose.connection;
 conn.on('error', console.error.bind(console, 'connection error:'));
-conn.once('open', function () { console.log("Great success!"); });
+conn.once('open', function () { console.log("Connected to mongodb database!"); });
 var schema = new Schema({
     votes: [Number]
 });
@@ -36,7 +36,7 @@ app.use((req, res, next) => {
     next();
 });
 app.get('/', (req, res) => {
-    res.send("Hello world");
+    res.send("This is an API for voting program");
 });
 app.post('/submit', (req, res) => {
     var json = req.body;
@@ -56,22 +56,27 @@ app.post('/submit', (req, res) => {
         return res.send('Error in json request format');
     }
 });
-app.get('/result', (req, res) => {
-    Vote.find({}, (err, users) => {
-        let ballots = users.map(user => {
-            return user.votes;
+app.post('/result', (req, res) => {
+    if (typeof req.body.seats == "number") {
+        Vote.find({}, (err, users) => {
+            let ballots = users.map(user => {
+                return user.votes;
+            });
+            const fptpRes = fptp_1.default(ballots, req.body.seats).map(winner => {
+                return { index: winner, party: parties[winner] };
+            });
+            const stvRes = stv_1.default(ballots, req.body.seats).winners.map(winner => {
+                return { index: winner, party: parties[winner] };
+            });
+            const schulzeRes = schulze_1.default(ballots, req.body.seats).map(winner => {
+                return { index: winner, party: parties[winner] };
+            });
+            res.send({ fptp: fptpRes, stv: stvRes, schulze: schulzeRes });
         });
-        const fptpRes = fptp_1.default(ballots, 1).map(winner => {
-            return { index: winner, party: parties[winner] };
-        });
-        const stvRes = stv_1.default(ballots, 1).winners.map(winner => {
-            return { index: winner, party: parties[winner] };
-        });
-        const schulzeRes = schulze_1.default(ballots, 1).map(winner => {
-            return { index: winner, party: parties[winner] };
-        });
-        res.send({ fptp: fptpRes, stv: stvRes, schulze: schulzeRes });
-    });
+    }
+    else {
+        res.status(400).send("Malformed json payload");
+    }
 });
 app.listen((process.env.PORT || 3000), function () {
     console.log('App listening on port 3000!');
