@@ -30,6 +30,14 @@ var schema = new Schema({
 });
 var Vote = mongoose.model('Votes', schema);
 app.use(bodyParser.json());
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+app.get('/', (req, res) => {
+    res.send("Hello world");
+});
 app.post('/submit', (req, res) => {
     var json = req.body;
     if (json.votes) {
@@ -65,6 +73,6 @@ app.get('/result', (req, res) => {
         res.send({ fptp: fptpRes, stv: stvRes, schulze: schulzeRes });
     });
 });
-app.listen(3000, function () {
-    console.log('Example app listening on port 3000!');
+app.listen((process.env.PORT || 3000), function () {
+    console.log('App listening on port 3000!');
 });
