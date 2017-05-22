@@ -1,0 +1,19 @@
+\begin{tikzpicture}[square/.style={regular polygon,regular polygon sides=4}]
+
+\draw (5,9.4)  rectangle(0.8,3.1);
+
+\node [left](title) at (3.4,9) { STV Ballot};
+
+\node[draw,square] (a) at (1.6,8.1) {\textcolor{red}2};
+\node[draw,square] (b) at (1.6,7) {\textcolor{red}3};
+\node[draw,square] (c) at (1.6,5.9) {\textcolor{red}1};
+\node[draw,square] (d) at (1.6,4.8) {\textcolor{red}5};
+\node[draw,square] (e) at (1.6,3.7) {\textcolor{red}4};
+
+\node[left] at (4.6,8.1){\small Candidate 1};
+\node[left] at (4.5,7){\small Candidate 2};
+\node[left] at (4.5,5.9){\small Candidate 3};
+\node[left] at (4.5,4.8){\small Candidate 4};
+\node[left] at (4.5,3.7){\small Candidate 5};
+
+\end{tikzpicture}

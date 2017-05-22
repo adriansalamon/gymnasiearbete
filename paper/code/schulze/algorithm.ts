@@ -1,4 +1,4 @@
-// Computing strongest path strength. Variant of the Floyd-Warshall algorithm
+// Computing strongest path strength.
 for (var i = 0; i < c; i++) {
     for (var j = 0; j < c; j++) {
         if (i !== j) {
