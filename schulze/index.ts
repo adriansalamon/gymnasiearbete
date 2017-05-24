@@ -8,7 +8,7 @@ interface PairMap {
 export default function calculateResult(input: number[][], seats: number): number[] {
     // Gets the pairs of candidates and their count
     // Ex 120 votes prefer a > b
-
+    
     // d[i][j] gives the number of ballots preferring candidate i > j
     let d: PairMap = getPairs(input)
     // o[i][j] stores the strongest path between candidate i and j
@@ -56,6 +56,8 @@ export default function calculateResult(input: number[][], seats: number): numbe
 
     return result
 }
+
+// TODO: Fix error when a candidate is always ranked last
 
 // Gets the pairwise comparison between all candidates and the number of preferences. Ex. 120 ballots prefer a > b
 function getPairs(ballots: number[][]): PairMap {
